@@ -19,6 +19,24 @@ With the resources available, we can:
 
 By doing this, we summarise 2 decades of cyber war and make it readable. This allows us to reach an audience of analysts that might want to catch up on what has been happening without any of the technical side. It allows may cater to the curiousities of the average person for geopolitical conflicts.
 
+## Exploratory Data Analysis
+
+*Pre-processing of the data set you chose*
+*• Show some basic statistics and get insights about the data*
+
+The EuRepoC dataset is a structured CSV where each row represents one cyber incident. Most fields are categorical (country names, attack type, initiator category) with multi-value entries separated by semicolons — for example, a single incident may list several receiver countries or several attack types at once. These were exploded and deduplicated before analysis.
+
+We provide basic statistics in a [Jupyter notebook](Analysis/eurepoc_global_dataset_1_3%20analysis.ipynb), notably:
+
+- **Incident volume over time** — incidents per year from 2000 to 2024, showing the sharp escalation from ~30/year in 2007 to 723 in 2023
+- **Attack type breakdown** — frequency of each incident type (Hijacking with Misuse, Disruption, Data theft, Ransomware, etc.) and their trend over time
+- **Target and initiator geography** — top 15 targeted countries and top 12 initiator countries (excluding unattributed)
+- **Weighted intensity distribution** — mean score of 2.44 out of 11, heavily right-skewed toward low-severity operations
+- **Attribution patterns** — attribution rate per year and breakdown of attribution methods (technical/forensic, government statements, legal proceedings)
+- **Geopolitical context** — initiator × target heatmap revealing the dominant Russia → Ukraine and China → United States corridors
+
+The main data quality issue is `economic_impact`, missing in ~48% of rows, reflecting how rarely financial damage figures are publicly disclosed. All other key columns are well-populated.
+
 ## Related Work
 
 ### EuRepoC Global Dataset
