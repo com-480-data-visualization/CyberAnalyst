@@ -24,6 +24,8 @@ By doing this, we summarise 2 decades of cyber war and make it readable. This al
 *Pre-processing of the data set you chose*
 *• Show some basic statistics and get insights about the data*
 
+### EuRepoC Global Dataset
+
 The EuRepoC dataset is a structured CSV where each row represents one cyber incident. Most fields are categorical (country names, attack type, initiator category) with multi-value entries separated by semicolons — for example, a single incident may list several receiver countries or several attack types at once. These were exploded and deduplicated before analysis.
 
 We provide basic statistics in a [Jupyter notebook](Analysis/eurepoc_global_dataset_1_3%20analysis.ipynb), notably:
@@ -36,6 +38,20 @@ We provide basic statistics in a [Jupyter notebook](Analysis/eurepoc_global_data
 - **Geopolitical context** — initiator × target heatmap revealing the dominant Russia → Ukraine and China → United States corridors
 
 The main data quality issue is `economic_impact`, missing in ~48% of rows, reflecting how rarely financial damage figures are publicly disclosed. All other key columns are well-populated.
+
+### KTZH Kanton Zürich Cybercrime Dataset
+
+The KTZH dataset is a compact, clean CSV with **93 rows and 10 columns** — one row per subcategory per year. Each row records the number of offences (total, completed, attempted), the population of Kanton Zürich, and an offence rate per 1,000 residents. No values are missing. German category labels were translated to English before analysis.
+
+We provide basic statistics in a [Jupyter notebook](Analysis/KTZH_00001202_00003680%20analysis.ipynb), notably:
+
+- **Total offences per year and year-on-year growth** — from 2,166 in 2017 to 14,162 in 2024, a 6.5× increase; the sharpest single-year jump was +65% between 2017 and 2018, and +46% in 2024
+- **Category breakdown** — **Digital Financial Crime** dominates with 78.7% of all offences (42,368 total), followed by Cybercrime narrow (12.7%) and Cyber Sexual Offences (7.3%)
+- **Subcategory breakdown** — **Cyber Fraud** alone accounts for 36,126 offences, far ahead of Financial & Package Agents (4,311), Sexual Offences (3,939), and Phishing (3,795)
+- **Completion rate by subcategory** — most offences are successfully carried out; Data Leaking and Crypto Theft have near-100% completion, while **Sextortion** has the lowest rate (~66%), suggesting a higher proportion of failed attempts or early interceptions
+- **Offence rate per 1,000 residents** — the canton-normalised rate grew from 1.5 in 2017 to 8.8 in 2024, visualised as a heatmap across all subcategories and years
+
+The data is entirely complete with no missing values, though coverage is limited to 8 years (2017–2024) and to Kanton Zürich only — which motivates our comparison with the global EuRepoC dataset.
 
 ## Related Work
 
