@@ -2,6 +2,14 @@
 
 ## Project Goal
 
+There is an ever-going arms race between countries, companies, and individuals over data — be it bank records, military positions, or political influence. Our project retraces the history of cyber conflict and links it to the geopolitical events that shaped it, making two decades of cyber warfare readable to anyone without a technical background.
+
+Our project helps users understand:
+
+- **Where attacks happen globally** — which countries are the most targeted and what types of attacks they face
+- **How attack types evolve over time** — tracking shifts in the nature of cyberattacks across the years, and how major geopolitical events correlate with those shifts
+- **Whether Switzerland is as exposed as other nations** — evaluating if Switzerland faces the same level and severity of attacks as the most targeted countries in the world
+
 ## Visualizations
 
 ### 1) World Map of Attack Intensity by Country & by Attack Type (selectable) — Choropleth Map
@@ -108,3 +116,8 @@ The average `weighted_intensity` score (0–11) per country, showing how severe 
 - 6_1_Perception_colors
 - 6_2_Mark_channel
 - 11_1_Tabular_data
+
+
+### Website development
+
+## Additional ideas
