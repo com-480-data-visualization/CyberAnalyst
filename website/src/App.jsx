@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Plot from 'react-plotly.js';
 import './App.css'; // Gardons le CSS basique pour l'instant
+import PlotLibrary from 'react-plotly.js';
+const Plot = PlotLibrary.default || PlotLibrary;
 
 function App() {
   const [graph1, setGraph1] = useState(null);
