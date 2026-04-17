@@ -91,25 +91,24 @@ Selecting a category updates the map to show each country's share of that specif
 
 
 
-### 3) Comparing Switzerland Against Other Countries — Grouped Bar Chart + Intensity Panel
+### 3) Deep Dive into Cybercrime in Switzerland — Network Graph + Age Susceptibility Plot
 
 #### Description & sketch
 
-After seeing the global picture in visualizations 1 and 2, this final section zooms in on Switzerland: directly addressing the professor's feedback — *"evaluate if Switzerland has the same level of attacks as other countries"*.
+After establishing the global context in visualizations 1 and 2, this final section narrows the focus to Switzerland and explores cybercrime inside the country in more detail. Rather than comparing Switzerland to other countries, this part turns the dataset into a domestic deep dive that shows which cybercrime categories dominate, how they break down into smaller subsets, and which age groups are most vulnerable.
 
-Two side-by-side panels compare Switzerland against Ukraine, the United States, and the Global Average:
+Two plots structure this section, presented one after the other:
 
-**Left panel — Attack volume & type (grouped bar chart):**
-The number of incidents per country broken down by attack type (Disruption, Exploitation, Info-Ops), showing both how frequently Switzerland is targeted compared to other nations and what kind of attacks it faces. Switzerland surprisingly leads on Disruption share (52.2%), higher than even Ukraine.
+**1) Cybercrime structure in Switzerland (network graph):**
+A node-link graph starts from the root node, representing total cybercrime in Switzerland, then branches into main subcategories such as malware, cyber fraud, phishing, and other relevant groups. The graph continues outward into smaller subsets, for example cyber fraud splitting into romance scam and malware splitting into trojan. Because the structure is acyclic and expands outward from the root, a network graph is a natural way to show both the hierarchy and the decomposition of crime types.
 
-**Right panel — Attack severity uplift (bar chart):**
-The average `weighted_intensity` score (0–11) per country, showing how severe the attacks directed at Switzerland are compared to those hitting other countries. Together the two panels answer the professor's question: not just how often Switzerland is hit, but how hard.
+**2) Age susceptibility to cybercrime (simple plot):**
+A simple plot shows how different age ranges are affected by cybercrime in Switzerland. The goal is to make the relative susceptibility of each age group easy to read at a glance, so the chart emphasizes which ranges are most exposed and whether vulnerability rises or falls with age.
 
 **Interactions:**
-- Hover on a bar → exact count or intensity score and raw incident count
-- Click a country to highlight it across both panels simultaneously
-- *(Extra)* Breakdown of initiator categories per country (state-sponsored vs. criminal vs. hacktivist)
-- *(Extra)* Breakdown of targeted sectors per country (critical infrastructure, government, corporate)
+- Hover on a node or edge → exact category name, share, and incident count
+- Hover on an age range → susceptibility value and raw incident count
+- Click a node to highlight its descendants and trace the full path from the root
 
 #### Tools & lectures needed
 
