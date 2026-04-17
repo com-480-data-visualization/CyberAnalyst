@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, GeoJSON } from 'react-leaflet';
-import { feature as topojsonFeature } from 'topojson-client';
 import 'leaflet/dist/leaflet.css';
 
 // Color scale helper: intensity → color (white to dark red)
@@ -26,15 +25,13 @@ function CyberMap({ countryIntensity }) {
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
-    fetch(`${base}data/countries-50m.json`)
+    fetch(`${base}data/countries.geojson`)
       .then((res) => {
         if (!res.ok) throw new Error(`Map data fetch failed: ${res.status}`);
         return res.json();
       })
-      .then((topology) => {
-        const countries = topology?.objects?.countries;
-        if (!countries) throw new Error('Invalid TopoJSON: missing objects.countries');
-        const geoJson = topojsonFeature(topology, countries);
+      .then((geoJson) => {
+        if (!geoJson?.features) throw new Error('Invalid GeoJSON: missing features');
         setGeoData(geoJson);
       })
       .catch((err) => {
@@ -53,7 +50,7 @@ function CyberMap({ countryIntensity }) {
     const intensity = countryIntensity?.[countryName];
     
     // Skip Antarctica
-    if (feature.id === '010') return;
+    if (feature.id === '010' || countryName === 'Antarctica') return;
 
     // Set the color based on intensity
     const fillColor = getColorByIntensity(intensity, minIntensity, maxIntensity);
