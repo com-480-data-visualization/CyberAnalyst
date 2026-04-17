@@ -130,6 +130,23 @@ A simple plot shows how different age ranges are affected by cybercrime in Switz
 - 11_1_Tabular_data
 
 
-### Website development
 
-## Additional ideas
+
+### Website Development
+
+The skeleton is available at [this link](https://com-480-data-visualization.github.io/CyberAnalyst/).
+
+- [x] Website deployment via GitHub Actions (Vite/React)
+- [x] General page layout and navigation structure
+- [x] Initial integration of `react-plotly.js`
+- [ ] Refine CSS/Tailwind styling for a "Cyber-Analyst" aesthetic
+- [ ] Connect processed JSON datasets to all three visualizations
+- [ ] Implement cross-graph filtering and tooltips
+
+### Additional Ideas
+
+* **Interactive Scrollytelling**: A guided narrative where scrolling triggers map pans or timeline zooms to highlight specific geopolitical shifts.
+* **Cross-Component Linked Views**: Clicking a country on the map instantly filters the Streamgraph and Swiss Deep-Dive views for a specific comparison.
+* **Geopolitical Context Cards**: Hoverable markers on the timeline that display news summaries for major events like the SolarWinds hack or the Ukraine invasion.
+* **Hierarchical Node Drill-down**: Interactive network graph for Swiss cybercrime where clicking nodes expands into more granular sub-categories (e.g., Fraud → Phishing).
+* **Custom "Country Duel" Tool**: A comparison widget allowing users to select any two nations from the EuRepoC dataset to compare their threat profiles side-by-side.
