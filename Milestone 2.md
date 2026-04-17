@@ -110,6 +110,10 @@ A simple plot shows how different age ranges are affected by cybercrime in Switz
 - Hover on an age range → susceptibility value and raw incident count
 - Click a node to highlight its descendants and trace the full path from the root
 
+<img src="docs/sketches/NetworkGraph.png" width="70%" alt="NetGraph">
+
+<img src="docs/sketches/AgeGraph.png" width="70%" alt="AgeGraph">
+
 #### Tools & lectures needed
 
 **Tools:**
