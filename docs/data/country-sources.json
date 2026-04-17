@@ -1,0 +1,1113 @@
+{
+  "Afghanistan": {
+    "China": 6,
+    "Russia": 5,
+    "Pakistan": 4,
+    "Iran": 3,
+    "Germany": 2,
+    "United States of America": 2,
+    "China, Russia": 1,
+    "Not attributed": 1,
+    "United Kingdom": 1
+  },
+  "Albania": {
+    "Iran": 3,
+    "China": 1,
+    "Serbia": 1,
+    "Turkey": 1
+  },
+  "Algeria": {
+    "Algeria": 2,
+    "France": 1,
+    "Iran": 1
+  },
+  "Angola": {
+    "Not attributed": 2,
+    "Morocco": 1,
+    "Portugal": 1
+  },
+  "Argentina": {
+    "Not attributed": 13,
+    "Argentina": 2,
+    "Brazil": 1,
+    "China": 1
+  },
+  "Armenia": {
+    "Azerbaijan": 6,
+    "Russia": 3,
+    "Turkey": 2,
+    "China": 1,
+    "China, Russia": 1,
+    "Iran": 1,
+    "Not attributed": 1,
+    "Palestine": 1
+  },
+  "Australia": {
+    "Not attributed": 18,
+    "China": 17,
+    "Iran": 7,
+    "Russia": 4,
+    "Australia": 1,
+    "India": 1,
+    "Pakistan": 1
+  },
+  "Austria": {
+    "Not attributed": 7,
+    "Austria": 3,
+    "Russia": 3,
+    "China": 2,
+    "Turkey": 2,
+    "Iran": 1,
+    "Ukraine": 1,
+    "United Kingdom": 1
+  },
+  "Azerbaijan": {
+    "Armenia": 9,
+    "Iran": 2,
+    "Not attributed": 2,
+    "Russia": 2,
+    "China, Russia": 1,
+    "Kazakhstan": 1
+  },
+  "Bahamas": {
+    "United States of America": 1
+  },
+  "Bahrain": {
+    "Iran": 3,
+    "Bahrain": 2,
+    "China": 1
+  },
+  "Bangladesh": {
+    "India": 4,
+    "China": 3,
+    "Bangladesh": 1,
+    "Myanmar": 1,
+    "North Korea": 1,
+    "Not attributed": 1,
+    "Pakistan": 1,
+    "Vietnam": 1
+  },
+  "Belarus": {
+    "Belarus": 5,
+    "China": 4,
+    "Not attributed": 2,
+    "Kazakhstan": 1,
+    "Russia": 1,
+    "Ukraine": 1
+  },
+  "Belgium": {
+    "Not attributed": 18,
+    "Russia": 8,
+    "China": 7,
+    "United Kingdom": 2,
+    "United States of America": 2,
+    "China, Russia": 1,
+    "Iran": 1,
+    "Syria": 1
+  },
+  "Bermuda": {
+    "Russia": 1
+  },
+  "Bhutan": {
+    "China": 1
+  },
+  "Bolivia": {
+    "Brazil": 1,
+    "Chile": 1,
+    "Not attributed": 1
+  },
+  "Bosnia and Herz.": {
+    "Not attributed": 2
+  },
+  "Botswana": {
+    "China": 1
+  },
+  "Brazil": {
+    "Not attributed": 9,
+    "China": 8,
+    "Brazil": 4,
+    "North Korea": 4,
+    "Iran": 1,
+    "United Kingdom": 1
+  },
+  "British Virgin Is.": {
+    "Not attributed": 1
+  },
+  "Brunei": {
+    "China": 3
+  },
+  "Bulgaria": {
+    "Russia": 4,
+    "China": 1,
+    "Not attributed": 1
+  },
+  "Burkina Faso": {
+    "Not attributed": 1
+  },
+  "Burundi": {
+    "China": 1
+  },
+  "Cambodia": {
+    "China": 8,
+    "Cambodia": 2,
+    "North Korea": 1,
+    "Vietnam": 1
+  },
+  "Cameroon": {
+    "China": 1,
+    "Not attributed": 1
+  },
+  "Canada": {
+    "Not attributed": 37,
+    "China": 11,
+    "Russia": 7,
+    "Iran": 5,
+    "North Korea": 2,
+    "Syria": 2,
+    "Brazil": 1,
+    "Canada": 1,
+    "China, South China Sea (region)": 1,
+    "Ethiopia": 1,
+    "India": 1,
+    "Lebanon": 1,
+    "Saudi Arabia": 1
+  },
+  "Chile": {
+    "Not attributed": 8,
+    "Chile": 3,
+    "China": 2,
+    "North Korea": 2,
+    "Lebanon": 1,
+    "Peru": 1,
+    "Russia": 1
+  },
+  "China": {
+    "China": 27,
+    "United States of America": 11,
+    "Not attributed": 5,
+    "North Korea": 4,
+    "Vietnam": 4,
+    "India": 3,
+    "Iran": 3,
+    "Philippines": 2,
+    "Russia": 2,
+    "Canada, Switzerland, France, Europe (region), North America": 1,
+    "France": 1,
+    "Indonesia, Malaysia": 1,
+    "Netherlands": 1,
+    "Pakistan": 1,
+    "South Korea": 1,
+    "Taiwan": 1,
+    "Turkey": 1
+  },
+  "Colombia": {
+    "Not attributed": 8,
+    "Brazil": 2,
+    "Colombia": 2,
+    "North Korea": 1
+  },
+  "Congo": {
+    "China": 2,
+    "Germany": 1
+  },
+  "Costa Rica": {
+    "China": 1,
+    "Not attributed": 1
+  },
+  "Croatia": {
+    "China": 1,
+    "Iran": 1,
+    "Not attributed": 1
+  },
+  "Cuba": {
+    "Brazil": 1,
+    "Cuba": 1,
+    "Not attributed": 1,
+    "Turkey": 1
+  },
+  "Cyprus": {
+    "China": 2,
+    "Lebanon": 1,
+    "Not attributed": 1,
+    "Palestine": 1,
+    "Turkey": 1
+  },
+  "Czechia": {
+    "Russia": 9,
+    "China": 2,
+    "Czechia": 2,
+    "North Korea": 2,
+    "Not attributed": 2
+  },
+  "Denmark": {
+    "Not attributed": 8,
+    "China": 3,
+    "Russia": 2,
+    "Iran": 1,
+    "North Korea": 1,
+    "Sudan": 1,
+    "Turkey": 1
+  },
+  "Djibouti": {
+    "China": 1,
+    "Not attributed": 1
+  },
+  "Dominica": {
+    "Not attributed": 2,
+    "Dominica": 1
+  },
+  "Ecuador": {
+    "Brazil": 2,
+    "Not attributed": 2,
+    "China": 1
+  },
+  "Egypt": {
+    "Iran": 5,
+    "China": 3,
+    "Palestine": 3,
+    "Egypt": 1,
+    "Jordan": 1,
+    "Lebanon": 1,
+    "Pakistan": 1,
+    "Turkey": 1,
+    "Yemen": 1
+  },
+  "El Salvador": {
+    "El Salvador": 1,
+    "Europe (region), South America": 1
+  },
+  "Estonia": {
+    "Not attributed": 5,
+    "Russia": 4,
+    "North Korea": 3,
+    "Ukraine": 1
+  },
+  "Fiji": {
+    "China": 1
+  },
+  "Finland": {
+    "Not attributed": 6,
+    "Russia": 3,
+    "China": 2,
+    "North Korea": 1
+  },
+  "France": {
+    "Not attributed": 60,
+    "Russia": 11,
+    "China": 10,
+    "Iran": 4,
+    "North Korea": 2,
+    "Syria": 2,
+    "Turkey": 2,
+    "Algeria": 1,
+    "Bangladesh": 1,
+    "Brazil": 1,
+    "France": 1,
+    "Malaysia": 1,
+    "Russia, China": 1,
+    "United Kingdom": 1,
+    "United States of America": 1
+  },
+  "Georgia": {
+    "Russia": 13,
+    "Iran": 2,
+    "Not attributed": 1
+  },
+  "Germany": {
+    "Not attributed": 79,
+    "China": 22,
+    "Russia": 22,
+    "North Korea": 7,
+    "Iran": 5,
+    "Germany": 3,
+    "United Kingdom": 2,
+    "Ethiopia": 1,
+    "France": 1,
+    "Indonesia": 1,
+    "Lebanon": 1,
+    "Russia, China": 1,
+    "Turkey": 1,
+    "Vietnam": 1
+  },
+  "Ghana": {
+    "China": 1
+  },
+  "Greece": {
+    "Turkey": 3,
+    "Not attributed": 2,
+    "Russia": 2,
+    "United States of America": 2
+  },
+  "Grenada": {
+    "Not attributed": 1
+  },
+  "Guam": {
+    "China": 1
+  },
+  "Guatemala": {
+    "Guatemala": 1
+  },
+  "Guyana": {
+    "China": 2
+  },
+  "Hong Kong": {
+    "China": 22,
+    "Not attributed": 8,
+    "Iran": 1,
+    "North Korea": 1,
+    "Russia": 1,
+    "Turkey": 1
+  },
+  "Hungary": {
+    "China": 3,
+    "Russia": 3,
+    "Not attributed": 2,
+    "North Korea": 1,
+    "Russia, China": 1
+  },
+  "Iceland": {
+    "China": 1,
+    "Not attributed": 1,
+    "Russia": 1
+  },
+  "India": {
+    "Pakistan": 33,
+    "China": 25,
+    "Not attributed": 13,
+    "North Korea": 11,
+    "Bangladesh": 6,
+    "Iran": 5,
+    "Russia": 5,
+    "India": 3,
+    "Brazil": 1,
+    "China, Pakistan": 1,
+    "China, Russia": 1,
+    "Indonesia": 1,
+    "Italy": 1,
+    "Lebanon": 1,
+    "Russia, Belarus": 1,
+    "South Korea": 1,
+    "Turkey": 1,
+    "United States of America": 1,
+    "Vietnam": 1,
+    "Yemen": 1
+  },
+  "Indonesia": {
+    "China": 8,
+    "Not attributed": 4,
+    "Bangladesh": 1,
+    "Brazil": 1,
+    "North Korea": 1,
+    "Vietnam": 1
+  },
+  "Iran": {
+    "Iran": 19,
+    "United States of America": 5,
+    "Not attributed": 4,
+    "Russia": 3,
+    "Saudi Arabia": 3,
+    "China": 2,
+    "Israel": 2,
+    "United Kingdom": 2,
+    "Albania": 1,
+    "China, Russia": 1,
+    "France": 1,
+    "India": 1,
+    "Israel, United States": 1,
+    "Netherlands": 1,
+    "Pakistan": 1,
+    "Palestine": 1
+  },
+  "Iraq": {
+    "Iran": 5,
+    "Pakistan": 1,
+    "Palestine": 1,
+    "Turkey": 1
+  },
+  "Ireland": {
+    "China": 1,
+    "Iran": 1
+  },
+  "Israel": {
+    "Iran": 54,
+    "Palestine": 14,
+    "Not attributed": 8,
+    "Turkey": 4,
+    "Bangladesh": 3,
+    "China": 3,
+    "Lebanon": 3,
+    "Egypt": 2,
+    "North Korea": 2,
+    "Pakistan": 2,
+    "Russia": 2,
+    "Saudi Arabia": 2,
+    "Syria": 2,
+    "United States of America": 2,
+    "Algeria": 1,
+    "India": 1,
+    "Iran, Islamic Republic of, Not available": 1,
+    "Jordan": 1,
+    "Malaysia": 1,
+    "Tunisia": 1,
+    "United Kingdom": 1
+  },
+  "Italy": {
+    "Not attributed": 21,
+    "Russia": 12,
+    "Italy": 5,
+    "Iran": 4,
+    "China": 3,
+    "North Korea": 3,
+    "Lebanon": 1,
+    "Russia, Belarus": 1,
+    "Russia, China": 1,
+    "United States of America": 1
+  },
+  "Japan": {
+    "China": 31,
+    "Not attributed": 18,
+    "North Korea": 8,
+    "South Korea": 4,
+    "Iran": 3,
+    "Russia": 2,
+    "United States of America": 1
+  },
+  "Jordan": {
+    "Iran": 3,
+    "Not attributed": 2,
+    "Palestine": 2,
+    "Algeria": 1,
+    "China": 1,
+    "Lebanon": 1
+  },
+  "Kazakhstan": {
+    "China": 3,
+    "Kazakhstan": 3,
+    "Not attributed": 3,
+    "Russia": 3,
+    "Brazil": 1,
+    "China, Czech Republic": 1,
+    "China, Russia": 1
+  },
+  "Kenya": {
+    "China": 4,
+    "United States of America": 1
+  },
+  "Kosovo": {
+    "Russia": 1
+  },
+  "Kuwait": {
+    "Iran": 6,
+    "Not attributed": 1,
+    "Palestine": 1
+  },
+  "Kyrgyzstan": {
+    "Russia": 3,
+    "China": 1,
+    "China, Czech Republic": 1,
+    "Kazakhstan": 1,
+    "Kyrgyzstan": 1,
+    "Not attributed": 1
+  },
+  "Laos": {
+    "China": 4,
+    "Vietnam": 1
+  },
+  "Latvia": {
+    "Russia": 3,
+    "China": 1,
+    "Latvia": 1,
+    "North Korea": 1,
+    "Not attributed": 1
+  },
+  "Lebanon": {
+    "Iran": 3,
+    "Israel": 2,
+    "Palestine": 2,
+    "China": 1,
+    "Kuwait": 1,
+    "Lebanon": 1,
+    "Not attributed": 1,
+    "United States of America": 1
+  },
+  "Libya": {
+    "Palestine": 2,
+    "Libya": 1,
+    "Not attributed": 1
+  },
+  "Liechtenstein": {
+    "Not attributed": 1,
+    "Russia": 1
+  },
+  "Lithuania": {
+    "Russia": 7,
+    "China": 5,
+    "Not attributed": 3,
+    "Russia, Belarus": 1
+  },
+  "Luxembourg": {
+    "Russia": 3,
+    "China": 1,
+    "Not attributed": 1
+  },
+  "Macao": {
+    "Not attributed": 1
+  },
+  "Madagascar": {
+    "China": 1
+  },
+  "Malawi": {
+    "Not attributed": 1
+  },
+  "Malaysia": {
+    "China": 11,
+    "Not attributed": 2,
+    "Malaysia": 1,
+    "Vietnam": 1
+  },
+  "Maldives": {
+    "India": 1,
+    "Not attributed": 1
+  },
+  "Malta": {
+    "Russia": 1
+  },
+  "Mexico": {
+    "Not attributed": 15,
+    "Mexico": 7,
+    "China": 4,
+    "North Korea": 2,
+    "United States of America": 2,
+    "Pakistan": 1
+  },
+  "Moldova": {
+    "Not attributed": 3,
+    "China": 1,
+    "Russia": 1
+  },
+  "Mongolia": {
+    "China": 6,
+    "North Korea": 1,
+    "Russia": 1
+  },
+  "Montenegro": {
+    "Russia": 2,
+    "China": 1
+  },
+  "Morocco": {
+    "Morocco": 3,
+    "Algeria": 1,
+    "China": 1,
+    "Iran": 1,
+    "Not attributed": 1
+  },
+  "Myanmar": {
+    "China": 8,
+    "Myanmar": 2,
+    "Bangladesh": 1,
+    "Vietnam": 1
+  },
+  "Nepal": {
+    "China": 2,
+    "North Korea": 1,
+    "Vietnam": 1
+  },
+  "Netherlands": {
+    "Not attributed": 10,
+    "China": 7,
+    "Russia": 7,
+    "Netherlands": 3,
+    "North Korea": 2,
+    "Turkey": 2,
+    "France": 1,
+    "Iran": 1,
+    "United Kingdom": 1,
+    "United States of America": 1
+  },
+  "New Caledonia": {
+    "Not attributed": 3,
+    "China": 1
+  },
+  "New Zealand": {
+    "Russia": 2,
+    "China": 1,
+    "Not attributed": 1
+  },
+  "Nicaragua": {
+    "China": 1
+  },
+  "Nigeria": {
+    "Morocco": 2,
+    "Nigeria": 2
+  },
+  "North Korea": {
+    "North Korea": 2,
+    "South Korea": 2,
+    "Korea, Republic of, United States": 1,
+    "Not attributed": 1,
+    "United States of America": 1
+  },
+  "North Macedonia": {
+    "China": 1
+  },
+  "Norway": {
+    "Not attributed": 6,
+    "China": 5,
+    "Russia": 2,
+    "Ethiopia": 1,
+    "France": 1,
+    "India": 1,
+    "North Korea": 1
+  },
+  "Oman": {
+    "Iran": 2,
+    "China": 1,
+    "Pakistan": 1,
+    "United Arab Emirates": 1,
+    "Yemen": 1
+  },
+  "Pakistan": {
+    "India": 21,
+    "Not attributed": 12,
+    "Pakistan": 6,
+    "China": 5,
+    "Iran": 4,
+    "Afghanistan": 2,
+    "Bangladesh": 1,
+    "India, Russia, Asia (region)": 1,
+    "India, South Asia (region)": 1,
+    "Russia": 1,
+    "Saudi Arabia": 1,
+    "United Kingdom": 1
+  },
+  "Palau": {
+    "Malaysia": 1
+  },
+  "Palestine": {
+    "Palestine": 8,
+    "Israel": 2,
+    "China": 1,
+    "Iran": 1,
+    "Lebanon": 1
+  },
+  "Panama": {
+    "China": 1,
+    "Panama": 1
+  },
+  "Paraguay": {
+    "China": 3,
+    "Paraguay": 1
+  },
+  "Peru": {
+    "Not attributed": 4,
+    "Peru": 4,
+    "Brazil": 2,
+    "China": 1,
+    "North Korea": 1
+  },
+  "Philippines": {
+    "China": 20,
+    "Philippines": 8,
+    "Not attributed": 6,
+    "Vietnam": 2,
+    "North Korea": 1,
+    "Taiwan": 1,
+    "Turkey": 1,
+    "United States of America": 1
+  },
+  "Poland": {
+    "Russia": 14,
+    "North Korea": 5,
+    "Not attributed": 4,
+    "China": 3,
+    "Poland": 2,
+    "Russia, Belarus": 1,
+    "Ukraine": 1
+  },
+  "Portugal": {
+    "Not attributed": 4,
+    "China": 3,
+    "Brazil": 1,
+    "Russia": 1
+  },
+  "Puerto Rico": {
+    "Not attributed": 3,
+    "Russia": 2
+  },
+  "Qatar": {
+    "United Arab Emirates": 3,
+    "China": 2,
+    "Not attributed": 2,
+    "Iran": 1,
+    "Saudi Arabia": 1,
+    "Syria": 1,
+    "United States of America": 1,
+    "Yemen": 1
+  },
+  "Romania": {
+    "Russia": 3,
+    "Not attributed": 2,
+    "China": 1,
+    "Romania": 1
+  },
+  "Russia": {
+    "Ukraine": 73,
+    "Not attributed": 18,
+    "Russia": 14,
+    "China": 9,
+    "North Korea": 9,
+    "United States of America": 7,
+    "United Kingdom": 4,
+    "Turkey": 3,
+    "Belarus": 2,
+    "Brazil": 2,
+    "France": 2,
+    "Iran": 2,
+    "Netherlands": 2,
+    "Pakistan": 2,
+    "Australia": 1,
+    "Australia, Canada, New Zealand, United Kingdom, United States": 1,
+    "Canada": 1,
+    "China, Russia": 1,
+    "Finland": 1,
+    "Georgia": 1,
+    "Germany": 1,
+    "India": 1,
+    "Japan": 1,
+    "Poland": 1,
+    "Sweden": 1,
+    "Switzerland": 1,
+    "Ukraine, Russia": 1
+  },
+  "Rwanda": {
+    "China": 1
+  },
+  "R\u00e9union": {
+    "Not attributed": 1
+  },
+  "Saudi Arabia": {
+    "Iran": 23,
+    "China": 3,
+    "Israel": 2,
+    "Russia": 2,
+    "Syria": 2,
+    "India, South Asia (region)": 1,
+    "Lebanon": 1,
+    "North Korea": 1,
+    "Not attributed": 1,
+    "Palestine": 1,
+    "Saudi Arabia": 1,
+    "Ukraine": 1,
+    "United Kingdom": 1,
+    "Yemen": 1
+  },
+  "Senegal": {
+    "Bangladesh": 2,
+    "Not attributed": 2,
+    "Russia": 1
+  },
+  "Serbia": {
+    "Serbia": 3,
+    "China": 2,
+    "Belarus": 1
+  },
+  "Seychelles": {
+    "Not attributed": 4
+  },
+  "Singapore": {
+    "China": 10,
+    "Not attributed": 10,
+    "India": 1,
+    "Iran": 1,
+    "Lebanon": 1
+  },
+  "Slovakia": {
+    "Not attributed": 2,
+    "Russia": 2,
+    "China": 1,
+    "Russia, Belarus": 1
+  },
+  "Slovenia": {
+    "Not attributed": 5
+  },
+  "South Africa": {
+    "Not attributed": 4,
+    "China": 3,
+    "Morocco": 3,
+    "Iran": 2,
+    "Russia": 2
+  },
+  "South Korea": {
+    "North Korea": 63,
+    "China": 17,
+    "Not attributed": 7,
+    "Russia": 2,
+    "South Korea": 2,
+    "Brazil": 1,
+    "India": 1,
+    "Iran": 1,
+    "Japan": 1,
+    "Palestine": 1,
+    "United States of America": 1
+  },
+  "Spain": {
+    "Not attributed": 29,
+    "China": 5,
+    "Russia": 5,
+    "Spain": 4,
+    "North Korea": 2,
+    "Brazil": 1,
+    "France": 1,
+    "Pakistan": 1,
+    "United States of America": 1
+  },
+  "Sri Lanka": {
+    "India": 2,
+    "Bangladesh": 1,
+    "China": 1,
+    "Not attributed": 1
+  },
+  "St. Vin. and Gren.": {
+    "North Korea": 1
+  },
+  "Sudan": {
+    "Iran": 1
+  },
+  "Sweden": {
+    "China": 4,
+    "Not attributed": 4,
+    "Russia": 3,
+    "Sudan": 2,
+    "Turkey": 2,
+    "Iran": 1,
+    "Pakistan": 1,
+    "Syria": 1
+  },
+  "Switzerland": {
+    "Not attributed": 12,
+    "Russia": 11,
+    "China": 3,
+    "Iran": 1,
+    "Lebanon": 1,
+    "Libya": 1,
+    "North Korea": 1,
+    "Spain": 1
+  },
+  "Syria": {
+    "Syria": 3,
+    "Not attributed": 2,
+    "Palestine": 2,
+    "Turkey": 2,
+    "United States of America": 2,
+    "Egypt": 1,
+    "France": 1,
+    "Iran": 1,
+    "Israel": 1,
+    "Russia": 1,
+    "Saudi Arabia": 1
+  },
+  "Taiwan": {
+    "China": 36,
+    "Not attributed": 5,
+    "North Korea": 2,
+    "Russia": 2,
+    "India": 1,
+    "Philippines": 1
+  },
+  "Tajikistan": {
+    "Kazakhstan": 2,
+    "Russia": 2,
+    "Belarus": 1,
+    "China, Czech Republic": 1
+  },
+  "Tanzania": {
+    "China": 1,
+    "Iran": 1
+  },
+  "Thailand": {
+    "China": 16,
+    "Not attributed": 3,
+    "Thailand": 3,
+    "Myanmar": 1
+  },
+  "Togo": {
+    "Togo": 2
+  },
+  "Trinidad and Tobago": {
+    "Not attributed": 1
+  },
+  "Tunisia": {
+    "China": 1,
+    "Iran": 1,
+    "Not attributed": 1,
+    "Tunisia": 1
+  },
+  "Turkey": {
+    "Turkey": 17,
+    "Iran": 13,
+    "Not attributed": 10,
+    "Russia": 5,
+    "China": 4,
+    "Palestine": 3,
+    "United States of America": 3,
+    "Lebanon": 2,
+    "North Korea": 2,
+    "Armenia": 1,
+    "Germany": 1,
+    "Greece": 1,
+    "India": 1,
+    "Qatar": 1,
+    "Sweden": 1,
+    "Syria": 1,
+    "United Arab Emirates": 1,
+    "Yemen": 1
+  },
+  "Turkmenistan": {
+    "China, Czech Republic": 1,
+    "China, Russia": 1,
+    "Russia": 1
+  },
+  "Uganda": {
+    "China": 1
+  },
+  "Ukraine": {
+    "Russia": 80,
+    "Not attributed": 20,
+    "China": 6,
+    "Ukraine": 6,
+    "Belarus, Russia": 1,
+    "China, Russia": 1,
+    "North Korea": 1,
+    "Russia, Belarus": 1
+  },
+  "United Arab Emirates": {
+    "Iran": 13,
+    "Not attributed": 5,
+    "China": 4,
+    "United Arab Emirates": 3,
+    "India": 2,
+    "North Korea": 2,
+    "Yemen": 2,
+    "Brazil": 1,
+    "Israel": 1,
+    "Lebanon": 1,
+    "Pakistan": 1,
+    "Palestine": 1,
+    "Russia": 1,
+    "Saudi Arabia": 1
+  },
+  "United Kingdom": {
+    "Not attributed": 42,
+    "Russia": 21,
+    "China": 19,
+    "Iran": 17,
+    "North Korea": 4,
+    "Syria": 4,
+    "United Kingdom": 4,
+    "United Arab Emirates": 3,
+    "Lebanon": 2,
+    "Pakistan": 2,
+    "Saudi Arabia": 2,
+    "Tunisia": 2,
+    "Algeria": 1,
+    "Bahrain": 1,
+    "Bangladesh": 1,
+    "Brazil": 1,
+    "China, Russia": 1,
+    "Ethiopia": 1,
+    "India": 1,
+    "Netherlands": 1,
+    "Palestine": 1,
+    "Philippines": 1,
+    "Russia, China": 1,
+    "Sudan": 1,
+    "Turkey": 1
+  },
+  "United States of America": {
+    "Not attributed": 289,
+    "China": 114,
+    "Russia": 79,
+    "Iran": 46,
+    "North Korea": 28,
+    "United States of America": 17,
+    "Syria": 8,
+    "Turkey": 5,
+    "India": 4,
+    "Sudan": 4,
+    "United Kingdom": 4,
+    "Lebanon": 3,
+    "Brazil": 2,
+    "Canada": 2,
+    "Pakistan": 2,
+    "Palestine": 2,
+    "Vietnam": 2,
+    "Algeria": 1,
+    "Bangladesh": 1,
+    "Belarus": 1,
+    "China, Russia": 1,
+    "Eastern Europe, Russia": 1,
+    "Egypt": 1,
+    "Ethiopia": 1,
+    "France": 1,
+    "Greece": 1,
+    "Indonesia": 1,
+    "Iraq": 1,
+    "Israel": 1,
+    "Malaysia": 1,
+    "Portugal": 1,
+    "Qatar": 1,
+    "Romania": 1,
+    "Russia, China": 1,
+    "Saudi Arabia": 1,
+    "South Korea": 1,
+    "Switzerland": 1,
+    "Tunisia": 1,
+    "Ukraine": 1,
+    "United Arab Emirates": 1,
+    "Yemen": 1
+  },
+  "Uruguay": {
+    "Not attributed": 4,
+    "India": 1
+  },
+  "Uzbekistan": {
+    "Kazakhstan": 2,
+    "Not attributed": 2,
+    "Russia": 2,
+    "China": 1,
+    "China, Czech Republic": 1,
+    "Uzbekistan": 1
+  },
+  "Vatican City": {
+    "Not attributed": 1,
+    "Russia, Belarus": 1,
+    "Turkey": 1
+  },
+  "Venezuela": {
+    "Not attributed": 3,
+    "Venezuela": 3,
+    "Brazil": 2,
+    "Colombia": 1,
+    "Iran": 1,
+    "Mexico": 1,
+    "North Korea": 1,
+    "Peru": 1
+  },
+  "Vietnam": {
+    "China": 19,
+    "Vietnam": 9,
+    "Not attributed": 7,
+    "North Korea": 3,
+    "Russia": 1
+  },
+  "Yemen": {
+    "China": 3,
+    "Yemen": 2,
+    "Iran": 1,
+    "United Arab Emirates": 1,
+    "United Kingdom": 1
+  },
+  "Zimbabwe": {
+    "China": 1
+  }
+}
