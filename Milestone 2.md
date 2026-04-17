@@ -71,8 +71,8 @@ Selecting a category updates the map to show each country's share of that specif
 - Hover on a country → tooltip showing country name, percentage of selected attack type, and raw incident count
 - *(Extra)* Click on a country to pin a detail panel showing its full attack type breakdown
 
-![Choropleth1](docs/sketches/ChoroplethMapTotalIntensityAttack.png)
-![Choropleth2](docs/sketches/ChoroplethMapWithAttackSelection.png)
+<img src="docs/sketches/ChoroplethMapTotalIntensityAttack.png" width="80%" alt="Total Intensity Map">
+<img src="docs/sketches/ChoroplethMapWithAttackSelection.png" width="80%" alt="Attack Selection Map">
 
 #### Tools & lectures needed
 
