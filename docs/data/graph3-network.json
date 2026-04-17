@@ -1,0 +1,211 @@
+{
+    "data": [
+        {
+            "type": "scatter",
+            "mode": "lines",
+            "x": [
+                0.0,
+                -1.4,
+                null,
+                0.0,
+                1.4,
+                null,
+                0.0,
+                0.0,
+                null,
+                -1.4,
+                -2.3,
+                null,
+                -1.4,
+                -1.4,
+                null,
+                -1.4,
+                -0.4,
+                null,
+                1.4,
+                1.9,
+                null,
+                1.4,
+                0.9,
+                null,
+                1.4,
+                2.8,
+                null
+            ],
+            "y": [
+                0.0,
+                -0.8,
+                null,
+                0.0,
+                -0.7,
+                null,
+                0.0,
+                -1.6,
+                null,
+                -0.8,
+                -1.5,
+                null,
+                -0.8,
+                -2.1,
+                null,
+                -0.8,
+                -1.5,
+                null,
+                -0.7,
+                -1.5,
+                null,
+                -0.7,
+                -1.9,
+                null,
+                -0.7,
+                -1.9,
+                null
+            ],
+            "line": {
+                "color": "rgba(80,80,80,0.35)",
+                "width": 2
+            },
+            "hoverinfo": "skip",
+            "showlegend": false
+        },
+        {
+            "type": "scatter",
+            "mode": "markers+text",
+            "x": [
+                0.0,
+                -1.4,
+                1.4,
+                0.0,
+                -2.3,
+                -1.4,
+                -0.4,
+                1.9,
+                0.9,
+                2.8
+            ],
+            "y": [
+                0.0,
+                -0.8,
+                -0.7,
+                -1.6,
+                -1.5,
+                -2.1,
+                -1.5,
+                -1.5,
+                -1.9,
+                -1.9
+            ],
+            "text": [
+                "Total Cybercrime",
+                "Cyber Fraud",
+                "Core Cybercrime",
+                "Sexual Offences",
+                "Phishing",
+                "Investment Scam",
+                "Romance Scam",
+                "Malware",
+                "Unauthorized Access",
+                "DDoS"
+            ],
+            "textposition": "bottom center",
+            "marker": {
+                "size": [
+                    75,
+                    66,
+                    33,
+                    28,
+                    43,
+                    37,
+                    25,
+                    23,
+                    22,
+                    22
+                ],
+                "color": [
+                    "#1f77b4",
+                    "#d62728",
+                    "#2ca02c",
+                    "#9467bd",
+                    "#ff9896",
+                    "#ff9896",
+                    "#ff9896",
+                    "#98df8a",
+                    "#98df8a",
+                    "#98df8a"
+                ],
+                "line": {
+                    "color": "white",
+                    "width": 1.5
+                },
+                "opacity": 0.95
+            },
+            "customdata": [
+                [
+                    14087
+                ],
+                [
+                    11844
+                ],
+                [
+                    1594
+                ],
+                [
+                    649
+                ],
+                [
+                    4300
+                ],
+                [
+                    3200
+                ],
+                [
+                    1200
+                ],
+                [
+                    700
+                ],
+                [
+                    500
+                ],
+                [
+                    394
+                ]
+            ],
+            "hovertemplate": "<b>%{text}</b><br>Placeholder count: %{customdata[0]:,.0f}<extra></extra>",
+            "showlegend": false
+        }
+    ],
+    "layout": {
+        "title": {
+            "text": "POC - Zurich Cybercrime Structure (Placeholder)"
+        },
+        "template": "plotly_white",
+        "xaxis": {
+            "visible": false
+        },
+        "yaxis": {
+            "visible": false
+        },
+        "margin": {
+            "l": 20,
+            "r": 20,
+            "t": 60,
+            "b": 20
+        },
+        "height": 600,
+        "annotations": [
+            {
+                "text": "Node size encodes placeholder incident volume",
+                "showarrow": false,
+                "xref": "paper",
+                "yref": "paper",
+                "x": 0.01,
+                "y": 1.05,
+                "font": {
+                    "size": 12,
+                    "color": "gray"
+                }
+            }
+        ]
+    }
+}

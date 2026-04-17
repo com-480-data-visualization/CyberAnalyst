@@ -1,0 +1,85 @@
+{
+    "data": [
+        {
+            "type": "bar",
+            "x": [
+                "0-17",
+                "18-24",
+                "25-34",
+                "35-44",
+                "45-54",
+                "55-64",
+                "65+"
+            ],
+            "y": [
+                210,
+                1040,
+                2480,
+                3110,
+                2870,
+                2360,
+                2017
+            ],
+            "marker": {
+                "color": "#1f77b4"
+            },
+            "text": [
+                "1.5%",
+                "7.4%",
+                "17.6%",
+                "22.1%",
+                "20.4%",
+                "16.8%",
+                "14.3%"
+            ],
+            "textposition": "outside",
+            "customdata": [
+                [
+                    0.015
+                ],
+                [
+                    0.074
+                ],
+                [
+                    0.176
+                ],
+                [
+                    0.221
+                ],
+                [
+                    0.204
+                ],
+                [
+                    0.168
+                ],
+                [
+                    0.143
+                ]
+            ],
+            "hovertemplate": "<b>Age:</b> %{x}<br><b>Incidents:</b> %{y:,}<br><b>Share:</b> %{customdata[0]:.1%}<extra></extra>"
+        }
+    ],
+    "layout": {
+        "title": {
+            "text": "POC - Age Susceptibility to Cybercrime (Placeholder)"
+        },
+        "template": "plotly_white",
+        "xaxis": {
+            "title": {
+                "text": "Age Group"
+            }
+        },
+        "yaxis": {
+            "title": {
+                "text": "Placeholder Incident Count"
+            }
+        },
+        "margin": {
+            "l": 40,
+            "r": 20,
+            "t": 60,
+            "b": 40
+        },
+        "height": 500
+    }
+}
