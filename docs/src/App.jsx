@@ -7,7 +7,8 @@ import CyberMap from './CyberMap';
 function App() {
   const [graph1, setGraph1] = useState(null);
   const [graph2, setGraph2] = useState(null);
-  const [graph3, setGraph3] = useState(null);
+  const [graph3Network, setGraph3Network] = useState(null);
+  const [graph3Age, setGraph3Age] = useState(null);
   const [countryIntensity, setCountryIntensity] = useState(null);
 
   // Charger les données JSON exportées depuis Python
@@ -15,7 +16,8 @@ function App() {
     const base = import.meta.env.BASE_URL;
     fetch(`${base}data/graph1.json`).then(res => res.json()).then(data => setGraph1(data));
     fetch(`${base}data/graph2.json`).then(res => res.json()).then(data => setGraph2(data));
-    fetch(`${base}data/graph3.json`).then(res => res.json()).then(data => setGraph3(data));
+    fetch(`${base}data/graph3-network.json`).then(res => res.json()).then(data => setGraph3Network(data));
+    fetch(`${base}data/graph3-age.json`).then(res => res.json()).then(data => setGraph3Age(data));
     fetch(`${base}data/country-intensity.json`).then(res => res.json()).then(data => setCountryIntensity(data));
   }, []);
 
@@ -54,16 +56,29 @@ function App() {
         </div>
       </section>
 
-      {/* GRAPH 3: Zurich Local Reality */}
+      {/* GRAPH 3A: Zurich Structure POC */}
       <section style={{ marginBottom: '80px' }}>
-        <h2 style={{ borderBottom: '2px solid #ecf0f1', paddingBottom: '10px' }}>3. The Local Reality (Zurich Deep-Dive)</h2>
-        <p>A normalized breakdown of Kanton Zürich's 6.5x growth in cyber offences over the last 8 years, showing the massive industrialization of Cyber Fraud targeting citizens.</p>
+        <h2 style={{ borderBottom: '2px solid #ecf0f1', paddingBottom: '10px' }}>3A. Zurich Cybercrime Structure (POC)</h2>
+        <p>A placeholder network-style overview of local cybercrime categories and subcategories in Zurich.</p>
         <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-          {graph3 ? (
-            <Plot data={graph3.data} layout={{ ...graph3.layout, autosize: true }} useResizeHandler style={{ width: '100%', height: '500px' }} />
-          ) : <p>Loading Local Data...</p>}
+          {graph3Network ? (
+            <Plot data={graph3Network.data} layout={{ ...graph3Network.layout, autosize: true }} useResizeHandler style={{ width: '100%', height: '600px' }} />
+          ) : <p>Loading Zurich Structure POC...</p>}
         </div>
       </section>
+
+      {/* GRAPH 3B: Age Susceptibility POC */}
+      <section style={{ marginBottom: '80px' }}>
+        <h2 style={{ borderBottom: '2px solid #ecf0f1', paddingBottom: '10px' }}>3B. Age Susceptibility (POC)</h2>
+        <p>A placeholder bar chart showing how cybercrime exposure can be compared across age groups.</p>
+        <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+          {graph3Age ? (
+            <Plot data={graph3Age.data} layout={{ ...graph3Age.layout, autosize: true }} useResizeHandler style={{ width: '100%', height: '500px' }} />
+          ) : <p>Loading Age POC...</p>}
+        </div>
+      </section>
+
+      
 
     </div>
   );
