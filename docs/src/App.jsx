@@ -32,7 +32,7 @@ function App() {
         </p>
       </header>
 
-      <CyberMap countryIntensity={countryIntensity} />
+      {/* <CyberMap countryIntensity={countryIntensity} /> */}
 
       {/* GRAPH 1: Global Pulse */}
       <section style={{ marginBottom: '80px' }}>
