@@ -100,7 +100,7 @@ After establishing the global context in visualizations 1 and 2, this final sect
 Two plots structure this section, presented one after the other:
 
 **1) Cybercrime structure in Switzerland (network graph):**
-A node-link graph starts from the root node, representing total cybercrime in Switzerland, then branches into main subcategories such as malware, cyber fraud, phishing, and other relevant groups. The graph continues outward into smaller subsets, for example cyber fraud splitting into romance scam and malware splitting into trojan. Because the structure is acyclic and expands outward from the root, a network graph is a natural way to show both the hierarchy and the decomposition of crime types.
+A node-link graph starts from the root node, representing total cybercrime in Switzerland, then branches into main subcategories such as malware, cyber fraud, phishing, and other relevant groups. The graph continues outward into smaller subsets, for example cyber fraud splitting into romance scam and malware splitting into trojan. Because the structure is acyclic and expands outward from the root, a network graph is a natural way to show both the hierarchy and the decomposition of crime types. Each category is represented by a circle who's size is proportional to its incident count.
 
 **2) Age susceptibility to cybercrime (simple plot):**
 A simple plot shows how different age ranges are affected by cybercrime in Switzerland. The goal is to make the relative susceptibility of each age group easy to read at a glance, so the chart emphasizes which ranges are most exposed and whether vulnerability rises or falls with age.
