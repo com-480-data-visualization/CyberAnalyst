@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import * as topojson from 'topojson-client';
 
 // Color scale helper: intensity → color (white to dark red)
 const getColorByIntensity = (intensity, minIntensity, maxIntensity) => {
@@ -26,13 +25,9 @@ function CyberMap({ countryIntensity }) {
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
-    fetch(`${base}data/countries-50m.json`)
+    fetch(`${base}data/countries.geojson`)
       .then(res => res.json())
-      .then(data => {
-        // Convert TopoJSON to GeoJSON
-        const geojson = topojson.feature(data, data.objects.countries);
-        setGeoData(geojson);
-      });
+      .then(data => setGeoData(data));
   }, []);
 
   if (!geoData) return <div>Loading map...</div>;
@@ -59,7 +54,7 @@ function CyberMap({ countryIntensity }) {
     });
 
     // Add hover effect
-    layer.on('mouseenter', (e) => {
+    layer.on('mouseover', (e) => {
       const target = e.target;
       target.setStyle({
         fillColor: intensity ? '#7f1d1d' : '#d1d5db',
@@ -77,7 +72,7 @@ function CyberMap({ countryIntensity }) {
       setTooltipPos({ x: e.originalEvent.clientX, y: e.originalEvent.clientY });
     });
 
-    layer.on('mouseleave', (e) => {
+    layer.on('mouseout', (e) => {
       const target = e.target;
       target.setStyle({
         fillColor: fillColor,
