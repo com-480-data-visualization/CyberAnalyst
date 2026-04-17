@@ -12,7 +12,7 @@ Our project helps users understand:
 
 ## Visualizations
 
-### 2) Most Frequent Attack Types Over Time — Streamgraph
+### 1) Most Frequent Attack Types Over Time — Streamgraph
 
 #### Description & sketch
 
@@ -35,6 +35,8 @@ Vertical dashed markers annotate key geopolitical events directly on the time ax
 - Hover on each band → exact incident count and percentage for that month
 - Hover on event markers → short annotation explaining the event and its cyber impact
 - *(Extra)* Toggle to isolate/hide individual attack categories
+
+![Streamgraph](docs/sketches/Streamgraph.png)
 
 #### Tools & lectures needed
 
@@ -68,6 +70,9 @@ Selecting a category updates the map to show each country's share of that specif
 - Dropdown menu to switch between attack type views
 - Hover on a country → tooltip showing country name, percentage of selected attack type, and raw incident count
 - *(Extra)* Click on a country to pin a detail panel showing its full attack type breakdown
+
+![Choropleth1](docs/sketches/ChoroplethMapTotalIntensityAttack.png)
+![Choropleth2](docs/sketches/ChoroplethMapWithAttackSelection.png)
 
 #### Tools & lectures needed
 
