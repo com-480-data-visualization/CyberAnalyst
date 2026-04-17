@@ -12,10 +12,11 @@ function App() {
 
   // Charger les données JSON exportées depuis Python
   useEffect(() => {
-    fetch('/data/graph1.json').then(res => res.json()).then(data => setGraph1(data));
-    fetch('/data/graph2.json').then(res => res.json()).then(data => setGraph2(data));
-    fetch('/data/graph3.json').then(res => res.json()).then(data => setGraph3(data));
-    fetch('/data/country-intensity.json').then(res => res.json()).then(data => setCountryIntensity(data));
+    const base = import.meta.env.BASE_URL;
+    fetch(`${base}data/graph1.json`).then(res => res.json()).then(data => setGraph1(data));
+    fetch(`${base}data/graph2.json`).then(res => res.json()).then(data => setGraph2(data));
+    fetch(`${base}data/graph3.json`).then(res => res.json()).then(data => setGraph3(data));
+    fetch(`${base}data/country-intensity.json`).then(res => res.json()).then(data => setCountryIntensity(data));
   }, []);
 
   return (
