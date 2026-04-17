@@ -12,42 +12,7 @@ Our project helps users understand:
 
 ## Visualizations
 
-### 1) World Map of Attack Intensity by Country & by Attack Type (selectable) — Choropleth Map
-
-#### Description & sketch
-
-A choropleth world map where each country is colored by its **share of global cyber attacks**, with darker shades indicating a higher percentage. The default view shows overall attack intensity across all types.
-
-On the side, a **dropdown menu** lets the user filter by attack category:
-- All (default)
-- Disruption
-- Exploitation
-- Info-Ops
-- Others
-
-Selecting a category updates the map to show each country's share of that specific attack type, for example, switching to "Disruption" would highlight Ukraine and Russia more heavily, while "Info-Ops" would shift focus toward the United States. The color scale is always normalized to the currently selected filter so relative differences remain visible.
-
-**Interactions:**
-- Dropdown menu to switch between attack type views
-- Hover on a country → tooltip showing country name, percentage of selected attack type, and raw incident count
-- *(Extra)* Click on a country to pin a detail panel showing its full attack type breakdown
-
-#### Tools & lectures needed
-
-**Tools:**
-- D3.js
-- TopoJSON
-- Leaflet (maybe)
-
-**Lectures:**
-- 4_2_D3
-- 5_1_Interaction
-- 6_1_Perception_colors
-- 6_2_Mark_channel
-- 8_1_Maps
-- 8_2_Practical_maps
-
-### 2) Most Frequent Attack Types per Country Over Time — Streamgraph
+### 2) Most Frequent Attack Types Over Time — Streamgraph
 
 #### Description & sketch
 
@@ -83,6 +48,43 @@ Vertical dashed markers annotate key geopolitical events directly on the time ax
 - 6_1_Perception_colors
 - 6_2_Mark_channel
 - 11_1_Tabular_data
+
+### 2) World Map of Attack Intensity by Country & by Attack Type (selectable) — Choropleth Map
+
+#### Description & sketch
+
+A choropleth world map where each country is colored by its **share of global cyber attacks**, with darker shades indicating a higher percentage. The default view shows overall attack intensity across all types.
+
+On the side, a **dropdown menu** lets the user filter by attack category:
+- All (default)
+- Disruption
+- Exploitation
+- Info-Ops
+- Others
+
+Selecting a category updates the map to show each country's share of that specific attack type, for example, switching to "Disruption" would highlight Ukraine and Russia more heavily, while "Info-Ops" would shift focus toward the United States. The color scale is always normalized to the currently selected filter so relative differences remain visible.
+
+**Interactions:**
+- Dropdown menu to switch between attack type views
+- Hover on a country → tooltip showing country name, percentage of selected attack type, and raw incident count
+- *(Extra)* Click on a country to pin a detail panel showing its full attack type breakdown
+
+#### Tools & lectures needed
+
+**Tools:**
+- D3.js
+- TopoJSON
+- Leaflet (maybe)
+
+**Lectures:**
+- 4_2_D3
+- 5_1_Interaction
+- 6_1_Perception_colors
+- 6_2_Mark_channel
+- 8_1_Maps
+- 8_2_Practical_maps
+
+
 
 ### 3) Comparing Switzerland Against Other Countries — Grouped Bar Chart + Intensity Panel
 
