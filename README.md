@@ -1,5 +1,55 @@
 # CyberAnalyst
 
+**Live site:** https://com-480-data-visualization.github.io/CyberAnalyst/
+
+## Milestone 3 — Final Visualization
+
+CyberAnalyst is an interactive data story covering two decades of global cyber conflict, from geopolitical attacks to local Swiss cybercrime. It is built as a single-page React application deployed to GitHub Pages.
+
+### Visualizations
+
+| # | Chart | Dataset | Interaction |
+|---|-------|---------|-------------|
+| 1 | **Streamgraph** — monthly incident volume by attack category (2018–2024) | EuRepoC Global | Toggle categories · hover for counts · numbered geopolitical event pins |
+| 2 | **Choropleth Globe** — attack intensity per country on a rotatable 3-D globe | EuRepoC Global | Drag to rotate · filter by attack type · click to pin threat-actor breakdown |
+| 3a | **Network Graph** — hierarchical structure of Swiss cybercrime | KTZH Canton Police | Click any node to highlight its path from root to leaf |
+| 3b | **Bar Chart** — cybercrime reports by age group in Switzerland | KTZH Canton Police | Hover for counts and percentages |
+
+### Tech stack
+
+- **React 18** + **Vite 5** — SPA build tooling
+- **D3.js v7** — all chart rendering (streamgraph, orthographic globe, network graph, bar chart)
+- **TopoJSON** — world map geometry
+- **GitHub Pages** — deployment from `docs/` folder
+
+### Run locally
+
+```bash
+cd docs
+npm install
+npm run dev        # dev server at http://localhost:5173
+npm run build      # production build into docs/
+```
+
+### Project structure
+
+```
+docs/
+  src/
+    App.jsx              # main layout and narrative
+    Streamgraph.jsx      # section 1 — global pulse
+    ChoroplethMap.jsx    # section 2 — globe
+    NetworkGraph.jsx     # section 3a — crime structure
+    AgeChart.jsx         # section 3b — age susceptibility
+  public/data/
+    graph1.json          # streamgraph data
+    country-intensity.json
+    country-sources.json
+    countries-50m.json   # TopoJSON world map
+```
+
+---
+
 Website link: https://com-480-data-visualization.github.io/CyberAnalyst/
 
 ## Dataset
