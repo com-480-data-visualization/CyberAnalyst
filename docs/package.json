@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && cp index.prod.html index.html && git -C .. add docs/index.html docs/assets/ && git -C .. commit -m 'build: update production bundle' && git -C .. push && cp index.prod.html /tmp/prod-backup.html && node -e \"const f='index.html',d=require('fs');d.writeFileSync(f,d.readFileSync('index.prod.html','utf8').replace(/<script[^>]+src=\\\"\\/CyberAnalyst[^>]+><\\/script>/,'<script type=\\\"module\\\" src=\\\"/src/main.jsx\\\"><\\/script>').replace(/<link[^>]+CyberAnalyst\\/assets[^>]+>/g,'').replace('href=\\\"/CyberAnalyst/favicon.svg\\\"','href=\\\"/favicon.svg\\\"'))\""
   },
   "dependencies": {
     "d3": "^7.9.0",
