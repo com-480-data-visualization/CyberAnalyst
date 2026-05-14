@@ -7,7 +7,6 @@ export default defineConfig(({ command }) => ({
   build: {
     outDir: './',
     rollupOptions: {
-      input: './index.dev.html',
       output: {
         assetFileNames: 'assets/[name]-[hash][extname]',
         chunkFileNames: 'assets/[name]-[hash].js',
