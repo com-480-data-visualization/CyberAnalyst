@@ -21,18 +21,22 @@ const devIndexHtml = `<!doctype html>
 </html>
 `
 
-// After build, restore the dev-friendly index.html so the dev server still works.
-function restoreDevIndex() {
+// After build: save the production index.html as index.prod.html,
+// then restore the dev index.html so the dev server keeps working.
+function manageIndex() {
   return {
-    name: 'restore-dev-index',
+    name: 'manage-index',
     closeBundle() {
-      fs.writeFileSync(path.resolve(__dirname, 'index.html'), devIndexHtml)
+      const root = path.resolve(__dirname)
+      const built = fs.readFileSync(path.join(root, 'index.html'), 'utf-8')
+      fs.writeFileSync(path.join(root, 'index.prod.html'), built)
+      fs.writeFileSync(path.join(root, 'index.html'), devIndexHtml)
     },
   }
 }
 
 export default defineConfig(({ command }) => ({
-  plugins: [react(), ...(command === 'build' ? [restoreDevIndex()] : [])],
+  plugins: [react(), ...(command === 'build' ? [manageIndex()] : [])],
   base: command === 'serve' ? '/' : '/CyberAnalyst/',
   build: {
     outDir: './',
