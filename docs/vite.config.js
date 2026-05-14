@@ -21,15 +21,14 @@ const devIndexHtml = `<!doctype html>
 </html>
 `
 
-// After build: save the production index.html as index.prod.html,
-// then restore the dev index.html so the dev server keeps working.
+// After build: copy production index.html → index.prod.html, restore dev index.html
 function manageIndex() {
   return {
     name: 'manage-index',
     closeBundle() {
       const root = path.resolve(__dirname)
-      const built = fs.readFileSync(path.join(root, 'index.html'), 'utf-8')
-      fs.writeFileSync(path.join(root, 'index.prod.html'), built)
+      const prod = fs.readFileSync(path.join(root, 'index.html'), 'utf-8')
+      fs.writeFileSync(path.join(root, 'index.prod.html'), prod)
       fs.writeFileSync(path.join(root, 'index.html'), devIndexHtml)
     },
   }
