@@ -169,7 +169,7 @@ export default function App() {
           color: '#00ffe7', fontSize: 11, fontWeight: 700,
           letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 22,
         }}>
-          COM-480 Data Visualization · EPFL 2025
+          COM-480 Data Visualization · EPFL 2026
         </div>
 
         <h1 className="hero-title" style={{
@@ -295,7 +295,7 @@ export default function App() {
         </div>
         <div>
           <div style={{ color: '#4a5568', marginBottom: 6, fontWeight: 600 }}>Team CyberAnalyst</div>
-          <div>COM-480 Data Visualization · EPFL · 2025</div>
+          <div>COM-480 Data Visualization · EPFL · 2026</div>
         </div>
       </footer>
     </div>
