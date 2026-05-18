@@ -151,7 +151,7 @@ export default function App() {
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
     fetch(`${base}data/graph1.json`).then(r => r.json()).then(setGraph1);
-    fetch(`${base}data/country-intensity.json`).then(r => r.json()).then(setCountryIntensity);
+    fetch(`${base}data/country-intensity-by-type.json`).then(r => r.json()).then(setCountryIntensity);
     fetch(`${base}data/country-sources.json`).then(r => r.json()).then(setCountrySources);
   }, []);
 

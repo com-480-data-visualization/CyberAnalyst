@@ -3,13 +3,12 @@ import { createPortal } from 'react-dom';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 
-const ATTACK_TYPES = ['All', 'Disruption', 'Exploitation', 'Info-Ops'];
+const ATTACK_TYPES = ['All', 'Disruption', 'Exploitation'];
 
 const TYPE_COLORS = {
   All:          ['#0f1a2e', '#1e40af', '#3b82f6', '#93c5fd'],
   Disruption:   ['#0f1a2e', '#1d4ed8', '#2563eb', '#60a5fa'],
   Exploitation: ['#1a0f10', '#991b1b', '#dc2626', '#fca5a5'],
-  'Info-Ops':   ['#0a1a0f', '#166534', '#16a34a', '#86efac'],
 };
 
 const STARS = Array.from({ length: 120 }, () => ({
@@ -58,7 +57,7 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
     if (!worldRef.current || !intensityRef.current || !svgRef.current) return;
     const { width, height } = dimsRef.current;
     const type = selectedTypeRef.current;
-    const intensityData = intensityRef.current;
+    const intensityData = intensityRef.current?.[type] || intensityRef.current?.['All'] || {};
     const radius = Math.min(width, height) / 2 - 10;
     const [lambda, phi] = rotationRef.current;
 
@@ -111,7 +110,8 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
       .style('cursor', 'pointer')
       .on('mouseover', function (event, d) {
         const name  = d.properties?.name;
-        const val   = intensityRef.current?.[name] || 0;
+        const type  = selectedTypeRef.current;
+        const val   = (intensityRef.current?.[type] || intensityRef.current?.['All'] || {})[name] || 0;
         const total = totalIncidentsRef.current;
         const pct   = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
         setTooltip({ x: event.clientX, y: event.clientY, name, val, pct });
@@ -128,7 +128,8 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
       })
       .on('click', (event, d) => {
         const name    = d.properties?.name;
-        const val     = intensityRef.current?.[name] || 0;
+        const type    = selectedTypeRef.current;
+        const val     = (intensityRef.current?.[type] || intensityRef.current?.['All'] || {})[name] || 0;
         const total   = totalIncidentsRef.current;
         const pct     = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
         const sources = sourcesRef.current?.[name] || {};
