@@ -81,7 +81,7 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
 
     const svg = d3.select(svgRef.current);
 
-    svg.select('#legend-max').text(`${maxVal} total incidents`);
+    svg.select('#legend-max').text(`${maxVal}`);
 
     const grad = svg.select('defs #map-grad');
     grad.selectAll('stop').remove();
