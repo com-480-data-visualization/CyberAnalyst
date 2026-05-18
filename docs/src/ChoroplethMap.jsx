@@ -26,9 +26,10 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
   const rotationRef     = useRef([0, -20]);
   const spinTimerRef    = useRef(null);
   const dimsRef         = useRef({ width: 900, height: 500 });
-  const selectedTypeRef = useRef('All');
-  const intensityRef    = useRef(null);
-  const sourcesRef      = useRef(null);
+  const selectedTypeRef  = useRef('All');
+  const intensityRef     = useRef(null);
+  const sourcesRef       = useRef(null);
+  const hoveredCountryRef = useRef(null);
 
   const [selectedType,  setSelectedType]  = useState('All');
   const [tooltip,       setTooltip]       = useState(null);
@@ -101,7 +102,7 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
 
     // Countries
     const countryPaths = svg.select('#countries').selectAll('path')
-      .data(countries.features, d => d.id);
+      .data(countries.features.filter(d => d.id !== undefined), d => d.id);
 
     countryPaths.enter().append('path')
       .attr('class', 'country')
@@ -112,14 +113,14 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
         const total = Object.values(intensityRef.current || {}).reduce((a, b) => a + b, 0);
         const pct  = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
         if (val > 0) setTooltip({ x: event.clientX, y: event.clientY, name, val, pct });
-        d3.select(this).attr('stroke', '#00ffe7').attr('stroke-width', 1.2);
+        hoveredCountryRef.current = name;
       })
       .on('mousemove', (event) => {
         setTooltip(prev => prev ? { ...prev, x: event.clientX, y: event.clientY } : prev);
       })
-      .on('mouseout', function () {
+      .on('mouseout', function (event, d) {
         setTooltip(null);
-        d3.select(this).attr('stroke', '#1e3050').attr('stroke-width', 0.4);
+        hoveredCountryRef.current = null;
       })
       .on('click', (event, d) => {
         const name    = d.properties?.name;
@@ -130,13 +131,20 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
         setPinnedCountry(p => p?.name === name ? null : { name, val, pct, sources });
       })
       .merge(countryPaths)
-      .attr('d', path)
+      .attr('d', d => path(d) || '')
+      .attr('visibility', d => {
+        const p = path(d);
+        return (!p || p.length < 10) ? 'hidden' : 'visible';
+      })
       .attr('fill', d => {
         const val = intensityData[d.properties?.name];
         return val > 0 ? colorScale(val) : '#1a2235';
       })
-      .attr('stroke', '#1e3050')
-      .attr('stroke-width', 0.4);
+      .attr('stroke', d => {
+        if (d.properties?.name === hoveredCountryRef.current) return '#00ffe7';
+        return intensityData[d.properties?.name] > 0 ? '#1e3050' : 'none';
+      })
+      .attr('stroke-width', d => d.properties?.name === hoveredCountryRef.current ? 1.2 : 0.4);
 
     // Atmosphere
     svg.select('#atmosphere').selectAll('*').remove();
@@ -202,7 +210,12 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
     // Drag
     svg.call(
       d3.drag()
-        .on('start', () => { stopSpin(); svg.style('cursor', 'grabbing'); })
+        .on('start', () => {
+          stopSpin();
+          hoveredCountryRef.current = null;
+          setTooltip(null);
+          svg.style('cursor', 'grabbing');
+        })
         .on('drag', (event) => {
           rotationRef.current = [
             rotationRef.current[0] + event.dx * 0.4,
@@ -223,6 +236,8 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
   const startSpin = useCallback(() => {
     if (spinTimerRef.current) return;
     spinTimerRef.current = d3.timer(() => {
+      hoveredCountryRef.current = null;
+      setTooltip(null);
       rotationRef.current = [rotationRef.current[0] + 0.3, rotationRef.current[1]];
       drawPaths();
     });
