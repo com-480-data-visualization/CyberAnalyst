@@ -114,6 +114,7 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
         const pct  = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
         if (val > 0) setTooltip({ x: event.clientX, y: event.clientY, name, val, pct });
         hoveredCountryRef.current = name;
+        drawPaths();
       })
       .on('mousemove', (event) => {
         setTooltip(prev => prev ? { ...prev, x: event.clientX, y: event.clientY } : prev);
@@ -121,6 +122,7 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
       .on('mouseout', function (event, d) {
         setTooltip(null);
         hoveredCountryRef.current = null;
+        drawPaths();
       })
       .on('click', (event, d) => {
         const name    = d.properties?.name;
