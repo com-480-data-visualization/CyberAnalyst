@@ -26,10 +26,11 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
   const rotationRef     = useRef([0, -20]);
   const spinTimerRef    = useRef(null);
   const dimsRef         = useRef({ width: 900, height: 500 });
-  const selectedTypeRef  = useRef('All');
-  const intensityRef     = useRef(null);
-  const sourcesRef       = useRef(null);
+  const selectedTypeRef   = useRef('All');
+  const intensityRef      = useRef(null);
+  const sourcesRef        = useRef(null);
   const hoveredCountryRef = useRef(null);
+  const totalIncidentsRef = useRef(0);
 
   const [selectedType,  setSelectedType]  = useState('All');
   const [tooltip,       setTooltip]       = useState(null);
@@ -74,13 +75,14 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
     const values = Object.values(intensityData).filter(v => v > 0);
     const maxVal = d3.max(values) || 1;
     const totalIncidents = Object.values(intensityData).reduce((a, b) => a + b, 0);
+    totalIncidentsRef.current = totalIncidents;
     const colorScale = d3.scaleSequentialLog(
       d3.interpolateRgbBasis(TYPE_COLORS[type])
     ).domain([0.5, maxVal]);
 
     const svg = d3.select(svgRef.current);
 
-    svg.select('#legend-max').text(`${maxVal} incidents`);
+    svg.select('#legend-max').text(`${maxVal} total incidents`);
 
     const grad = svg.select('defs #map-grad');
     grad.selectAll('stop').remove();
@@ -108,11 +110,11 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
       .attr('class', 'country')
       .style('cursor', 'pointer')
       .on('mouseover', function (event, d) {
-        const name = d.properties?.name;
-        const val  = intensityRef.current?.[name] || 0;
-        const total = Object.values(intensityRef.current || {}).reduce((a, b) => a + b, 0);
-        const pct  = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
-        if (val > 0) setTooltip({ x: event.clientX, y: event.clientY, name, val, pct });
+        const name  = d.properties?.name;
+        const val   = intensityRef.current?.[name] || 0;
+        const total = totalIncidentsRef.current;
+        const pct   = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
+        setTooltip({ x: event.clientX, y: event.clientY, name, val, pct });
         hoveredCountryRef.current = name;
         drawPaths();
       })
@@ -127,7 +129,7 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
       .on('click', (event, d) => {
         const name    = d.properties?.name;
         const val     = intensityRef.current?.[name] || 0;
-        const total   = Object.values(intensityRef.current || {}).reduce((a, b) => a + b, 0);
+        const total   = totalIncidentsRef.current;
         const pct     = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
         const sources = sourcesRef.current?.[name] || {};
         setPinnedCountry(p => p?.name === name ? null : { name, val, pct, sources });
@@ -203,6 +205,8 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
     svg.append('rect').attr('id', 'legend-rect')
       .attr('x', lx).attr('y', ly).attr('width', legendW).attr('height', 8)
       .attr('rx', 3).attr('fill', 'url(#map-grad)');
+    svg.append('text').attr('x', lx).attr('y', ly - 14)
+      .attr('fill', '#4a5568').attr('font-size', 9).attr('font-family', 'inherit').text('Total incidents');
     svg.append('text').attr('x', lx).attr('y', ly - 4)
       .attr('fill', '#4a5568').attr('font-size', 9).attr('font-family', 'inherit').text('0');
     svg.append('text').attr('id', 'legend-max').attr('x', lx + legendW).attr('y', ly - 4)
@@ -312,12 +316,14 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
           boxShadow: '0 4px 20px #00000066', whiteSpace: 'nowrap', fontFamily: 'inherit',
         }}>
           <div style={{ fontWeight: 700 }}>{tooltip.name}</div>
-          <div style={{ color: '#8b9bbf', marginTop: 2 }}>
-            Incidents: <span style={{ color: '#00ffe7', fontWeight: 700 }}>{tooltip.val}</span>
-          </div>
-          <div style={{ color: '#8b9bbf' }}>
-            Global share: <span style={{ color: '#fff', fontWeight: 700 }}>{tooltip.pct}%</span>
-          </div>
+          {tooltip.val > 0 ? <>
+            <div style={{ color: '#8b9bbf', marginTop: 2 }}>
+              Incidents: <span style={{ color: '#00ffe7', fontWeight: 700 }}>{tooltip.val}</span>
+            </div>
+            <div style={{ color: '#8b9bbf' }}>
+              Global share: <span style={{ color: '#fff', fontWeight: 700 }}>{tooltip.pct}%</span>
+            </div>
+          </> : <div style={{ color: '#4a5568', marginTop: 2 }}>No data</div>}
         </div>,
         document.body
       )}
@@ -331,28 +337,32 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
             <div style={{ display: 'flex', gap: 20, alignItems: 'baseline', flexWrap: 'wrap' }}>
               <span style={{ fontWeight: 700, color: '#e2e8f0', fontSize: 15 }}>{pinnedCountry.name}</span>
-              <span style={{ color: '#8b9bbf' }}>Incidents: <span style={{ color: '#00ffe7', fontWeight: 700 }}>{pinnedCountry.val}</span></span>
-              <span style={{ color: '#8b9bbf' }}>Share: <span style={{ color: '#fff', fontWeight: 700 }}>{pinnedCountry.pct}%</span></span>
+              {pinnedCountry.val > 0 ? <>
+                <span style={{ color: '#8b9bbf' }}>Incidents: <span style={{ color: '#00ffe7', fontWeight: 700 }}>{pinnedCountry.val}</span></span>
+                <span style={{ color: '#8b9bbf' }}>Share: <span style={{ color: '#fff', fontWeight: 700 }}>{pinnedCountry.pct}%</span></span>
+              </> : <span style={{ color: '#4a5568' }}>No data</span>}
             </div>
             <button onClick={() => setPinnedCountry(null)} style={{
               background: 'none', border: '1px solid #1e2330', color: '#8b9bbf',
               cursor: 'pointer', fontSize: 14, borderRadius: 4, padding: '2px 8px', fontFamily: 'inherit',
             }}>✕</button>
           </div>
-          <div style={{ fontSize: 11, color: '#4a5568', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-            Top attributed threat actors
-          </div>
-          {Object.keys(pinnedCountry.sources).length === 0
-            ? <div style={{ color: '#4a5568', fontStyle: 'italic' }}>No attribution data available</div>
-            : <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '8px 32px' }}>
-                {Object.entries(pinnedCountry.sources).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([actor, count]) => (
-                  <div key={actor} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-                    <span style={{ color: '#8b9bbf', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{actor}</span>
-                    <span style={{ color: '#e2e8f0', fontWeight: 600, flexShrink: 0 }}>{count}</span>
-                  </div>
-                ))}
-              </div>
-          }
+          {pinnedCountry.val > 0 && <>
+            <div style={{ fontSize: 11, color: '#4a5568', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Top attributed threat actors
+            </div>
+            {Object.keys(pinnedCountry.sources).length === 0
+              ? <div style={{ color: '#4a5568', fontStyle: 'italic' }}>No attribution data available</div>
+              : <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '8px 32px' }}>
+                  {Object.entries(pinnedCountry.sources).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([actor, count]) => (
+                    <div key={actor} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                      <span style={{ color: '#8b9bbf', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{actor}</span>
+                      <span style={{ color: '#e2e8f0', fontWeight: 600, flexShrink: 0 }}>{count}</span>
+                    </div>
+                  ))}
+                </div>
+            }
+          </>}
         </div>
       )}
     </div>
