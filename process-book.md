@@ -71,12 +71,12 @@ The most significant departure was replacing the **flat map with a 3D rotatable 
 
 The orthographic globe addressed both issues. Countries appear at their true relative sizes, and the drag-to-rotate interaction naturally invites exploration. Users spin the globe to find their country, increasing time spent on the visualization and the likelihood of discovering less obvious patterns - for example, Southeast Asian countries targeted disproportionately for intellectual property theft.
 
-The dropdown filter was replaced by **toggle buttons** (All / Disruption / Exploitation / Info-Ops) for more immediate interaction. The click panel was upgraded to show the **top attributed threat actors** per country, a significantly more informative data point than a plain type breakdown.
+The dropdown filter was replaced by **toggle buttons** (All / Disruption / Exploitation) for more immediate interaction. The EuRepoC dataset only contains three raw incident types - Disruption, and the Exploitation family (Data theft, Hijacking, Ransomware) - so an Info-Ops filter would have shown no data and was omitted. Each button loads real per-type incident counts generated from the raw CSV, so the color scale, max label, tooltip, and pin card all update to reflect the selected category. The click panel was upgraded to show the **top attributed threat actors** per country, a significantly more informative data point than a plain type breakdown.
 
-A **logarithmic color scale** was necessary because the attack distribution is heavily right-skewed: the US has 371 incidents while the median country has fewer than 5. A linear scale would make all but a handful of countries appear identical.
+A **logarithmic color scale** was necessary because the attack distribution is heavily right-skewed: the US has 871 total incidents (459 Exploitation, 298 Disruption) while the median country has fewer than 5. A linear scale would make all but a handful of countries appear identical.
 
 **Key insight the visualization reveals:**
-The US and Ukraine absorb the largest share of global attacks. Switching to Exploitation mode shifts the dominant targets to Western nations, with China as the primary attributed actor. Switzerland, despite its neutrality, appears consistently targeted for economic espionage.
+The US and Ukraine absorb the largest share of global attacks. Switching to Exploitation mode shifts focus to economic espionage targets, with China as the primary attributed actor. Switching to Disruption highlights Ukraine and European nations as the primary targets of Russian state operations.
 
 
 ### Visualization 3a - Network Graph: Swiss Cybercrime Structure
