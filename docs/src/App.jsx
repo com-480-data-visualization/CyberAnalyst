@@ -57,10 +57,15 @@ function SectionHeader({ number, title, subtitle }) {
         <span className="badge-pulse" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           width: 36, height: 36, borderRadius: '50%',
-          background: '#00ffe711', border: '1.5px solid #00ffe744',
-          color: '#00ffe7', fontSize: 15, fontWeight: 700, flexShrink: 0,
+          background: '#00ffb411', border: '1.5px solid #00ffb444',
+          color: '#00ffb4', fontSize: 14, fontWeight: 700, flexShrink: 0,
+          fontFamily: "'Orbitron', monospace",
         }}>{number}</span>
-        <h2 style={{ fontSize: '1.45em', color: '#e2e8f0', margin: 0, letterSpacing: '-0.02em' }}>
+        <h2 style={{
+          fontSize: '1.25em', color: '#e2e8f0', margin: 0,
+          letterSpacing: '0.06em', textTransform: 'uppercase',
+          fontFamily: "'Orbitron', monospace", fontWeight: 700,
+        }}>
           {title}
         </h2>
       </div>
@@ -72,11 +77,11 @@ function SectionHeader({ number, title, subtitle }) {
 function Card({ children, style }) {
   return (
     <div className="card-scanline" style={{
-      background: '#0f1117',
-      border: '1px solid #1e2330',
-      borderRadius: 14,
+      background: 'var(--bg-card)',
+      border: '1px solid var(--border)',
+      borderRadius: 'var(--radius-lg)',
       padding: '28px',
-      boxShadow: '0 4px 32px #00000066',
+      boxShadow: 'var(--glow-card), inset 0 1px 0 #ffffff06',
       ...style,
     }}>
       {children}
@@ -96,7 +101,7 @@ function StatBadge({ label, value, suffix = '', color = '#00ffe7', delay = 0 }) 
       onMouseEnter={e => { e.currentTarget.style.borderColor = color + '88'; e.currentTarget.style.boxShadow = `0 0 20px ${color}22`; }}
       onMouseLeave={e => { e.currentTarget.style.borderColor = color + '33'; e.currentTarget.style.boxShadow = 'none'; }}
     >
-      <div style={{ fontSize: 26, fontWeight: 700, color, letterSpacing: '-0.03em' }}>
+      <div style={{ fontSize: 24, fontWeight: 700, color, letterSpacing: '0.02em', fontFamily: "'Orbitron', monospace" }}>
         {val}{suffix}
       </div>
       <div style={{ fontSize: 11, color: '#4a5568', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
@@ -165,19 +170,22 @@ export default function App() {
       }}>
         <div style={{
           display: 'inline-block', padding: '3px 12px', borderRadius: 6,
-          background: '#00ffe711', border: '1px solid #00ffe733',
-          color: '#00ffe7', fontSize: 11, fontWeight: 700,
+          background: '#00ffb411', border: '1px solid #00ffb433',
+          color: '#00ffb4', fontSize: 11, fontWeight: 700,
           letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 22,
+          fontFamily: "'Jura', monospace",
         }}>
           COM-480 Data Visualization · EPFL 2026
         </div>
 
         <h1 className="hero-title" style={{
-          fontSize: 'clamp(2.2rem, 5vw, 4rem)', lineHeight: 1.08,
-          letterSpacing: '-0.04em', color: '#e2e8f0', marginBottom: 22,
-          textShadow: '0 0 60px #00ffe722',
+          fontSize: 'clamp(2rem, 5vw, 3.8rem)', lineHeight: 1.1,
+          letterSpacing: '0.06em', color: '#e2e8f0', marginBottom: 22,
+          fontFamily: "'Orbitron', monospace", fontWeight: 900,
+          textTransform: 'uppercase',
+          textShadow: '0 0 40px #00ffb433, 0 0 80px #00ffb411',
         }}>
-          Cyber<span style={{ color: '#00ffe7' }}>Analyst</span>
+          Cyber<span style={{ color: '#00ffb4', textShadow: '0 0 30px #00ffb4aa' }}>Analyst</span>
         </h1>
 
         <p style={{
@@ -189,7 +197,7 @@ export default function App() {
         </p>
 
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <StatBadge value={6000} suffix="+" label="Global incidents"  color="#00ffe7" delay={0.0} />
+          <StatBadge value={6000} suffix="+" label="Global incidents"  color="#00ffb4" delay={0.0} />
           <StatBadge value={2024}         label="Up to year"          color="#3b82f6" delay={0.2} />
           <StatBadge value={14087}        label="Swiss reports"       color="#ef4444" delay={0.4} />
           <StatBadge value={160}  suffix="+" label="Countries"        color="#22c55e" delay={0.6} />
@@ -233,7 +241,7 @@ export default function App() {
             : <LoadingPlaceholder label="Loading globe…" />}
         </Card>
         <div style={{ display: 'flex', gap: 16, marginTop: 18, flexWrap: 'wrap' }}>
-          <InsightCard color="#00ffe7" icon="🌍"
+          <InsightCard color="#00ffb4" icon="🌍"
             text="The United States and Ukraine absorb the largest share of global attacks — the US for espionage, Ukraine for disruption." />
           <InsightCard color="#a855f7" icon="🇨🇭"
             text="Switzerland, despite its neutrality, is a prime target for economic espionage given its financial and pharmaceutical sectors." />
@@ -273,7 +281,7 @@ export default function App() {
         <div style={{ display: 'flex', gap: 16, marginTop: 18, flexWrap: 'wrap' }}>
           <InsightCard color="#ef4444" icon="💸"
             text="Cyber fraud dominates Swiss cybercrime at 84% of all reports, with phishing and investment scams leading." />
-          <InsightCard color="#00ffe7" icon="👤"
+          <InsightCard color="#00ffb4" icon="👤"
             text="The 35–44 cohort is the most targeted age group, while minors and young adults are comparatively underrepresented." />
         </div>
       </section>
@@ -282,19 +290,19 @@ export default function App() {
       <footer style={{
         borderTop: '1px solid #1e2330', paddingTop: 32, marginTop: 40,
         display: 'flex', flexWrap: 'wrap', gap: 24, justifyContent: 'space-between',
-        fontSize: 12, color: '#2a3040',
+        fontSize: 12, color: '#8b9bbf',
       }}>
         <div>
-          <div style={{ color: '#4a5568', marginBottom: 6, fontWeight: 600 }}>Datasets</div>
+          <div style={{ color: '#00ffb4', marginBottom: 6, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: 11 }}>Datasets</div>
           <div>EuRepoC Global Dataset v1.3 — international cyber incidents</div>
           <div>KTZH Cantonal Police — Swiss cybercrime reports (Zurich)</div>
         </div>
         <div>
-          <div style={{ color: '#4a5568', marginBottom: 6, fontWeight: 600 }}>Built with</div>
+          <div style={{ color: '#00ffb4', marginBottom: 6, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: 11 }}>Built with</div>
           <div>D3.js · React · Vite · TopoJSON · GitHub Pages</div>
         </div>
         <div>
-          <div style={{ color: '#4a5568', marginBottom: 6, fontWeight: 600 }}>Team CyberAnalyst</div>
+          <div style={{ color: '#00ffb4', marginBottom: 6, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: 11 }}>Team CyberAnalyst</div>
           <div>COM-480 Data Visualization · EPFL · 2026</div>
         </div>
       </footer>
