@@ -7,7 +7,7 @@ const ATTACK_TYPES = ['All', 'Disruption', 'Exploitation'];
 
 const TYPE_COLORS = {
   All:          ['#0f1a2e', '#1e40af', '#3b82f6', '#93c5fd'],
-  Disruption:   ['#0f1a2e', '#1d4ed8', '#2563eb', '#60a5fa'],
+  Disruption:   ['#1a1200', '#92400e', '#f59e0b', '#fde68a'],
   Exploitation: ['#1a0f10', '#991b1b', '#dc2626', '#fca5a5'],
 };
 
