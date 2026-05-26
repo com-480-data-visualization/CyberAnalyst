@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import * as d3 from 'd3';
 
 const COLORS = {
@@ -179,8 +180,10 @@ export default function Streamgraph({ data }) {
 
       labelG
         .on('mouseenter', (event) => {
-          const [px, py] = d3.pointer(event, svgRef.current);
-          setEventTooltip({ x: px, y: py, ...ev });
+          setEventTooltip({ x: event.clientX, y: event.clientY, ...ev });
+        })
+        .on('mousemove', (event) => {
+          setEventTooltip(prev => prev ? { ...prev, x: event.clientX, y: event.clientY } : prev);
         })
         .on('mouseleave', () => setEventTooltip(null));
     });
@@ -287,30 +290,36 @@ export default function Streamgraph({ data }) {
         ))}
       </div>
 
-      {tooltip && (
+      {tooltip && createPortal(
         <div style={{
-          position: 'fixed', left: tooltip.x + 14, top: tooltip.y - 10, pointerEvents: 'none',
-          background: '#141720ee', border: `1px solid ${COLORS[tooltip.cat]}`,
-          borderRadius: 8, padding: '8px 14px', fontSize: 13, zIndex: 1000,
-          color: '#e2e8f0', boxShadow: `0 0 16px ${COLORS[tooltip.cat]}55`
+          position: 'fixed', left: tooltip.x + 14, top: tooltip.y + 14,
+          pointerEvents: 'none', background: '#141720ee',
+          border: `1px solid ${COLORS[tooltip.cat]}`, borderRadius: 8,
+          padding: '8px 14px', fontSize: 13, zIndex: 99999,
+          color: '#e2e8f0', boxShadow: `0 4px 20px #00000066`,
+          whiteSpace: 'nowrap', fontFamily: 'inherit',
         }}>
           <div style={{ color: COLORS[tooltip.cat], fontWeight: 700 }}>{tooltip.cat}</div>
-          <div>{tooltip.dateStr}</div>
-          <div>Incidents: <b style={{ color: '#fff' }}>{tooltip.count}</b></div>
-          <div>Share: <b style={{ color: '#fff' }}>{tooltip.pct}%</b></div>
-        </div>
+          <div style={{ color: '#8b9bbf', marginTop: 2 }}>{tooltip.dateStr}</div>
+          <div style={{ color: '#8b9bbf' }}>Incidents: <span style={{ color: '#fff', fontWeight: 700 }}>{tooltip.count}</span></div>
+          <div style={{ color: '#8b9bbf' }}>Share: <span style={{ color: '#fff', fontWeight: 700 }}>{tooltip.pct}%</span></div>
+        </div>,
+        document.body
       )}
 
-      {eventTooltip && (
+      {eventTooltip && createPortal(
         <div style={{
-          position: 'fixed', left: eventTooltip.x + 14, top: eventTooltip.y - 10, pointerEvents: 'none',
-          background: '#141720ee', border: '1px solid #f59e0b',
-          borderRadius: 8, padding: '10px 16px', fontSize: 13, zIndex: 1000,
-          maxWidth: 260, color: '#e2e8f0', boxShadow: '0 0 16px #f59e0b55'
+          position: 'fixed', left: eventTooltip.x + 14, top: eventTooltip.y + 14,
+          pointerEvents: 'none', background: '#141720ee',
+          border: '1px solid #f59e0b', borderRadius: 8,
+          padding: '10px 16px', fontSize: 13, zIndex: 99999,
+          maxWidth: 260, color: '#e2e8f0', boxShadow: '0 4px 20px #00000066',
+          fontFamily: 'inherit',
         }}>
           <div style={{ color: '#f59e0b', fontWeight: 700 }}>{eventTooltip.label}</div>
           <div style={{ marginTop: 4, color: '#8b9bbf', lineHeight: 1.5 }}>{eventTooltip.detail}</div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
