@@ -19,6 +19,8 @@ const EVENTS = [
 export default function Streamgraph({ data }) {
   const svgRef = useRef(null);
   const containerRef = useRef(null);
+  const xScaleRef = useRef(null);   // shared x scale for crosshair
+  const marginRef = useRef({ top: 60, right: 20, bottom: 36, left: 50 });
   const [tooltip, setTooltip] = useState(null);
   const [eventTooltip, setEventTooltip] = useState(null);
   const [activeCategories, setActiveCategories] = useState(new Set(Object.keys(COLORS)));
@@ -39,6 +41,8 @@ export default function Streamgraph({ data }) {
     const margin = { top: 60, right: 20, bottom: 36, left: 50 };
     const W = width - margin.left - margin.right;
     const H = height - margin.top - margin.bottom;
+
+    marginRef.current = margin;
 
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
@@ -79,6 +83,7 @@ export default function Streamgraph({ data }) {
     const series = stack(rows);
 
     const x = d3.scaleTime().domain(d3.extent(allDates)).range([0, W]);
+    xScaleRef.current = x;
     const yMin = d3.min(series, s => d3.min(s, d => d[0]));
     const yMax = d3.max(series, s => d3.max(s, d => d[1]));
     const y = d3.scaleLinear().domain([yMin, yMax]).range([H, 0]);
@@ -89,7 +94,19 @@ export default function Streamgraph({ data }) {
       .y1(d => y(d[1]))
       .curve(d3.curveCatmullRom);
 
+    // Helper: move the crosshair to an x position in chart coords
+    const moveCrosshair = (crosshairG, cx, dateLabel) => {
+      crosshairG.style('display', null);
+      crosshairG.select('.ch-line').attr('x1', cx).attr('x2', cx);
+      crosshairG.select('.ch-dot').attr('cx', cx);
+      crosshairG.select('.ch-label').attr('x', cx).text(dateLabel);
+    };
+
     // Draw streams
+    // streams reference crosshair via closure; crosshair is appended later but
+    // the variable is hoisted here so we use a ref-like holder
+    const crosshairHolder = { g: null };
+
     g.selectAll('.stream')
       .data(series)
       .enter().append('path')
@@ -110,10 +127,13 @@ export default function Streamgraph({ data }) {
         const pct = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
         setTooltip({ x: event.clientX, y: event.clientY, cat: d.key, count, pct, dateStr: d3.timeFormat('%b %Y')(row.date) });
         d3.select(this).attr('fill-opacity', 1);
+        // Update crosshair
+        if (crosshairHolder.g) moveCrosshair(crosshairHolder.g, Math.max(0, Math.min(W, mx)), d3.timeFormat('%b %Y')(row.date));
       })
       .on('mouseleave', function () {
         setTooltip(null);
         d3.select(this).attr('fill-opacity', 0.82);
+        if (crosshairHolder.g) crosshairHolder.g.style('display', 'none');
       })
       .transition().duration(900).delay((d, i) => i * 150)
       .attr('fill-opacity', 0.82);
@@ -165,7 +185,47 @@ export default function Streamgraph({ data }) {
         .on('mouseleave', () => setEventTooltip(null));
     });
 
-    // No inline labels — legend is rendered in JSX below the SVG
+    // Crosshair group (drawn on top of everything)
+    const crosshair = g.append('g').attr('class', 'crosshair').style('pointer-events', 'none').style('display', 'none');
+    crosshairHolder.g = crosshair;
+
+    crosshair.append('line')
+      .attr('class', 'ch-line')
+      .attr('y1', 0).attr('y2', H)
+      .attr('stroke', 'rgba(255,255,255,0.35)')
+      .attr('stroke-width', 1)
+      .attr('stroke-dasharray', '4,3');
+
+    // Small dot at the x-axis intersection
+    crosshair.append('circle')
+      .attr('class', 'ch-dot')
+      .attr('cy', H).attr('r', 3)
+      .attr('fill', 'rgba(255,255,255,0.7)')
+      .attr('stroke', '#0a0c10').attr('stroke-width', 1);
+
+    // Date label just below the x-axis
+    crosshair.append('text')
+      .attr('class', 'ch-label')
+      .attr('y', H + 28)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#8b9bbf')
+      .attr('font-size', 11)
+      .attr('font-family', 'JetBrains Mono, monospace');
+
+    // Transparent overlay rect — catches mouse in the empty background areas
+    // (streams handle their own area; this fills the gaps)
+    g.append('rect')
+      .attr('width', W).attr('height', H)
+      .attr('fill', 'transparent')
+      .lower()   // push behind streams so stream mousemove still fires
+      .on('mousemove', function (event) {
+        const [mx] = d3.pointer(event);
+        const cx = Math.max(0, Math.min(W, mx));
+        moveCrosshair(crosshair, cx, d3.timeFormat('%b %Y')(x.invert(cx)));
+      })
+      .on('mouseleave', function () {
+        crosshair.style('display', 'none');
+      });
 
   }, [data, activeCategories, dims]);
 

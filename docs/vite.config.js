@@ -5,7 +5,8 @@ export default defineConfig(({ command }) => ({
   plugins: [react()],
   base: command === 'serve' ? '/' : '/CyberAnalyst/',
   build: {
-    outDir: './',
+    outDir: 'dist',
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name]-[hash][extname]',

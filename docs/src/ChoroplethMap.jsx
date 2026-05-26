@@ -11,230 +11,252 @@ const TYPE_COLORS = {
   Exploitation: ['#1a0f10', '#991b1b', '#dc2626', '#fca5a5'],
 };
 
+// Generated once at module load — stable across renders
 const STARS = Array.from({ length: 120 }, () => ({
-  x: Math.random(),
-  y: Math.random(),
-  r: Math.random() * 1.1,
-  o: Math.random() * 0.5 + 0.1,
+  x: Math.random(), y: Math.random(),
+  r: Math.random() * 1.1 + 0.2,
+  o: Math.random() * 0.5 + 0.2,
 }));
 
-export default function ChoroplethMap({ countryIntensity, countrySources }) {
-  const svgRef          = useRef(null);
-  const containerRef    = useRef(null);
-  const worldRef        = useRef(null);
-  const rotationRef     = useRef([0, -20]);
-  const spinTimerRef    = useRef(null);
-  const dimsRef         = useRef({ width: 900, height: 500 });
-  const selectedTypeRef   = useRef('All');
-  const intensityRef      = useRef(null);
-  const sourcesRef        = useRef(null);
-  const hoveredCountryRef = useRef(null);
-  const totalIncidentsRef = useRef(0);
+const ctrlBtn = {
+  background: '#14172088', border: '1px solid #1e2330', color: '#8b9bbf',
+  cursor: 'pointer', fontSize: 12, borderRadius: 4, padding: '4px 10px',
+  fontFamily: 'inherit', transition: 'all 0.2s',
+};
 
+export default function ChoroplethMap({ countryIntensity, countrySources }) {
+  // ── DOM refs ──────────────────────────────────────────────────────────────
+  const canvasRef      = useRef(null);
+  const containerRef   = useRef(null);
+
+  // ── Data refs (never stale in callbacks) ──────────────────────────────────
+  const worldRef             = useRef(null);
+  const featuresRef          = useRef([]);   // TopoJSON features, Kosovo filtered
+  const graticuleRef         = useRef(null);
+  const rotationRef          = useRef([0, -20]);
+  const dimsRef              = useRef({ width: 900, height: 500 });
+  const selectedTypeRef      = useRef('All');
+  const intensityRef         = useRef(null);
+  const sourcesRef           = useRef(null);
+  const hoveredRef           = useRef(null); // country name string | null
+  const totalRef             = useRef(0);
+  const colorScaleRef        = useRef(null);
+  const colorCacheRef        = useRef({});   // name -> fill string, rebuilt on type change
+  const lastBuiltTypeRef     = useRef(null);
+  const spinTimerRef         = useRef(null);
+  const rafRef               = useRef(null); // pending requestAnimationFrame id
+  const projectionRef        = useRef(null); // reused projection object
+
+  // ── React state (only for UI re-renders outside canvas) ───────────────────
   const [selectedType,  setSelectedType]  = useState('All');
   const [tooltip,       setTooltip]       = useState(null);
   const [pinnedCountry, setPinnedCountry] = useState(null);
   const [dims,          setDims]          = useState({ width: 900, height: 500 });
   const [isSpinning,    setIsSpinning]    = useState(false);
 
-  // Keep refs in sync with latest state/props
+  // Sync refs with state/props
   useEffect(() => { dimsRef.current = dims; }, [dims]);
-  useEffect(() => { selectedTypeRef.current = selectedType; }, [selectedType]);
-  useEffect(() => { intensityRef.current = countryIntensity; }, [countryIntensity]);
+  useEffect(() => { selectedTypeRef.current = selectedType; lastBuiltTypeRef.current = null; }, [selectedType]);
+  useEffect(() => { intensityRef.current = countryIntensity; lastBuiltTypeRef.current = null; }, [countryIntensity]);
   useEffect(() => { sourcesRef.current = countrySources; }, [countrySources]);
 
   // Resize observer
   useEffect(() => {
     const ro = new ResizeObserver(entries => {
       const w = entries[0].contentRect.width;
-      if (w > 0) setDims({ width: w, height: Math.max(400, Math.min(w * 0.75, 600)) });
+      if (w > 0) setDims({ width: w, height: Math.max(400, Math.min(w * 0.72, 580)) });
     });
     if (containerRef.current) ro.observe(containerRef.current);
     return () => ro.disconnect();
   }, []);
 
-  const drawPaths = useCallback(() => {
-    if (!worldRef.current || !intensityRef.current || !svgRef.current) return;
-    const { width, height } = dimsRef.current;
+  // ── Color cache: rebuilt only when type or data changes ──────────────────
+  const rebuildColors = useCallback(() => {
     const type = selectedTypeRef.current;
-    const intensityData = intensityRef.current?.[type] || intensityRef.current?.['All'] || {};
-    const radius = Math.min(width, height) / 2 - 10;
-    const [lambda, phi] = rotationRef.current;
+    if (type === lastBuiltTypeRef.current && colorScaleRef.current) return;
+    lastBuiltTypeRef.current = type;
 
-    const projection = d3.geoOrthographic()
-      .scale(radius)
-      .translate([width / 2, height / 2])
-      .rotate([lambda, phi, 0])
-      .clipAngle(90);
+    const data = intensityRef.current?.[type] || {};
+    const vals = Object.values(data).filter(v => v > 0);
+    const maxVal = d3.max(vals) || 1;
+    totalRef.current = vals.reduce((a, b) => a + b, 0);
 
-    const path = d3.geoPath().projection(projection);
-    const countries = topojson.feature(worldRef.current, worldRef.current.objects.countries);
-    const graticule = d3.geoGraticule();
-
-    const values = Object.values(intensityData).filter(v => v > 0);
-    const maxVal = d3.max(values) || 1;
-    const totalIncidents = Object.values(intensityData).reduce((a, b) => a + b, 0);
-    totalIncidentsRef.current = totalIncidents;
-    const colorScale = d3.scaleSequentialLog(
+    colorScaleRef.current = d3.scaleSequentialLog(
       d3.interpolateRgbBasis(TYPE_COLORS[type])
     ).domain([0.5, maxVal]);
 
-    const svg = d3.select(svgRef.current);
-
-    svg.select('#legend-max').text(`${maxVal}`);
-
-    const grad = svg.select('defs #map-grad');
-    grad.selectAll('stop').remove();
-    TYPE_COLORS[type].forEach((c, i, arr) => {
-      grad.append('stop').attr('offset', `${(i / (arr.length - 1)) * 100}%`).attr('stop-color', c);
+    const cache = {};
+    featuresRef.current.forEach(f => {
+      const name = f.properties?.name;
+      const v = data[name];
+      cache[name] = v > 0 ? colorScaleRef.current(v) : '#1a2235';
     });
+    colorCacheRef.current = cache;
 
-    // Ocean sphere
-    svg.select('#ocean').selectAll('*').remove();
-    svg.select('#ocean').append('path')
-      .datum({ type: 'Sphere' }).attr('d', path)
-      .attr('fill', '#0a1628');
-
-    // Graticule
-    svg.select('#graticule').selectAll('*').remove();
-    svg.select('#graticule').append('path')
-      .datum(graticule()).attr('d', path)
-      .attr('stroke', '#0d2040').attr('stroke-width', 0.5).attr('fill', 'none');
-
-    // Countries
-    const countryPaths = svg.select('#countries').selectAll('path')
-      .data(countries.features.filter(d => d.id !== undefined), d => d.id);
-
-    countryPaths.enter().append('path')
-      .attr('class', 'country')
-      .style('cursor', 'pointer')
-      .on('mouseover', function (event, d) {
-        const name  = d.properties?.name;
-        const type  = selectedTypeRef.current;
-        const val   = (intensityRef.current?.[type] || intensityRef.current?.['All'] || {})[name] || 0;
-        const total = totalIncidentsRef.current;
-        const pct   = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
-        setTooltip({ x: event.clientX, y: event.clientY, name, val, pct });
-        hoveredCountryRef.current = name;
-        drawPaths();
-      })
-      .on('mousemove', (event) => {
-        setTooltip(prev => prev ? { ...prev, x: event.clientX, y: event.clientY } : prev);
-      })
-      .on('mouseout', function (event, d) {
-        setTooltip(null);
-        hoveredCountryRef.current = null;
-        drawPaths();
-      })
-      .on('click', (event, d) => {
-        const name    = d.properties?.name;
-        const type    = selectedTypeRef.current;
-        const val     = (intensityRef.current?.[type] || intensityRef.current?.['All'] || {})[name] || 0;
-        const total   = totalIncidentsRef.current;
-        const pct     = total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
-        const sources = sourcesRef.current?.[name] || {};
-        setPinnedCountry(p => p?.name === name ? null : { name, val, pct, sources });
-      })
-      .merge(countryPaths)
-      .attr('d', d => path(d) || '')
-      .attr('visibility', d => {
-        const p = path(d);
-        return (!p || p.length < 10) ? 'hidden' : 'visible';
-      })
-      .attr('fill', d => {
-        const val = intensityData[d.properties?.name];
-        return val > 0 ? colorScale(val) : '#1a2235';
-      })
-      .attr('stroke', d => {
-        if (d.properties?.name === hoveredCountryRef.current) return '#00ffe7';
-        return intensityData[d.properties?.name] > 0 ? '#1e3050' : 'none';
-      })
-      .attr('stroke-width', d => d.properties?.name === hoveredCountryRef.current ? 1.2 : 0.4);
-
-    // Atmosphere
-    svg.select('#atmosphere').selectAll('*').remove();
-    svg.select('#atmosphere').append('path')
-      .datum({ type: 'Sphere' }).attr('d', path)
-      .attr('fill', 'url(#globe-glow)')
-      .attr('stroke', '#00ffe7')
-      .attr('stroke-width', 0.8)
-      .attr('stroke-opacity', 0.25);
+    // Store max for legend
+    if (canvasRef.current) canvasRef.current._legendMax = maxVal;
   }, []);
 
-  const initSvg = useCallback(() => {
-    if (!svgRef.current) return;
+  // ── Single draw call — pure canvas, no DOM mutations ─────────────────────
+  const drawFrame = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !featuresRef.current.length) return;
+
+    rebuildColors();
+
     const { width, height } = dimsRef.current;
+    const dpr    = window.devicePixelRatio || 1;
+    const ctx    = canvas.getContext('2d');
+    const radius = Math.min(width, height) / 2 - 10;
 
-    const svg = d3.select(svgRef.current);
-    svg.selectAll('*').remove();
-    svg.attr('width', width).attr('height', height);
+    // Update shared projection in-place
+    const proj = projectionRef.current;
+    proj.scale(radius)
+        .translate([width / 2, height / 2])
+        .rotate([rotationRef.current[0], rotationRef.current[1], 0]);
 
-    // Defs
-    const defs = svg.append('defs');
-    const glow = defs.append('radialGradient').attr('id', 'globe-glow')
-      .attr('cx', '50%').attr('cy', '50%').attr('r', '50%');
-    glow.append('stop').attr('offset', '85%').attr('stop-color', '#0a0f1e').attr('stop-opacity', 0);
-    glow.append('stop').attr('offset', '100%').attr('stop-color', '#00ffe7').attr('stop-opacity', 0.18);
+    const path = d3.geoPath(proj, ctx);
 
-    const grad = defs.append('linearGradient').attr('id', 'map-grad');
-    TYPE_COLORS[selectedTypeRef.current].forEach((c, i, arr) => {
-      grad.append('stop').attr('offset', `${(i / (arr.length - 1)) * 100}%`).attr('stop-color', c);
-    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.scale(dpr, dpr);
 
     // Space background
-    svg.append('rect').attr('width', width).attr('height', height).attr('fill', '#05070d');
+    ctx.fillStyle = '#05070d';
+    ctx.fillRect(0, 0, width, height);
 
-    // Stars (static, drawn once)
-    svg.append('g').attr('id', 'stars')
-      .selectAll('circle').data(STARS).enter().append('circle')
-      .attr('cx', d => d.x * width)
-      .attr('cy', d => d.y * height)
-      .attr('r', d => d.r)
-      .attr('fill', '#fff')
-      .attr('opacity', d => d.o);
+    // Stars (static positions)
+    for (const s of STARS) {
+      ctx.beginPath();
+      ctx.arc(s.x * width, s.y * height, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.o})`;
+      ctx.fill();
+    }
 
-    // Groups for dynamic content
-    svg.append('g').attr('id', 'ocean');
-    svg.append('g').attr('id', 'graticule');
-    svg.append('g').attr('id', 'countries');
-    svg.append('g').attr('id', 'atmosphere').attr('pointer-events', 'none');
+    // Ocean
+    ctx.beginPath();
+    path({ type: 'Sphere' });
+    ctx.fillStyle = '#0a1628';
+    ctx.fill();
+
+    // Graticule
+    ctx.beginPath();
+    path(graticuleRef.current);
+    ctx.strokeStyle = '#0d2040';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    // Countries
+    const hovered = hoveredRef.current;
+    const colors  = colorCacheRef.current;
+    for (const f of featuresRef.current) {
+      const name = f.properties?.name;
+      ctx.beginPath();
+      path(f);
+      ctx.fillStyle = colors[name] || '#1a2235';
+      ctx.fill();
+      if (name === hovered) {
+        ctx.strokeStyle = '#00ffe7';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      } else if (colors[name] !== '#1a2235') {
+        ctx.strokeStyle = '#1e3050';
+        ctx.lineWidth = 0.4;
+        ctx.stroke();
+      }
+    }
+
+    // Atmosphere glow
+    const cx = width / 2, cy = height / 2;
+    const glow = ctx.createRadialGradient(cx, cy, radius * 0.86, cx, cy, radius + 2);
+    glow.addColorStop(0, 'rgba(0,255,231,0)');
+    glow.addColorStop(1, 'rgba(0,255,231,0.18)');
+    ctx.beginPath();
+    path({ type: 'Sphere' });
+    ctx.fillStyle = glow;
+    ctx.fill();
+    ctx.beginPath();
+    path({ type: 'Sphere' });
+    ctx.strokeStyle = 'rgba(0,255,231,0.22)';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
 
     // Legend
     const legendW = Math.min(160, width * 0.18);
     const lx = width - legendW - 16;
     const ly = height - 28;
-    svg.append('rect').attr('id', 'legend-rect')
-      .attr('x', lx).attr('y', ly).attr('width', legendW).attr('height', 8)
-      .attr('rx', 3).attr('fill', 'url(#map-grad)');
-    svg.append('text').attr('x', lx).attr('y', ly - 14)
-      .attr('fill', '#4a5568').attr('font-size', 9).attr('font-family', 'inherit').text('Total incidents');
-    svg.append('text').attr('x', lx).attr('y', ly - 4)
-      .attr('fill', '#4a5568').attr('font-size', 9).attr('font-family', 'inherit').text('0');
-    svg.append('text').attr('id', 'legend-max').attr('x', lx + legendW).attr('y', ly - 4)
-      .attr('fill', '#4a5568').attr('font-size', 9).attr('font-family', 'inherit')
-      .attr('text-anchor', 'end');
+    const colors4 = TYPE_COLORS[selectedTypeRef.current];
+    const lgGrad = ctx.createLinearGradient(lx, 0, lx + legendW, 0);
+    colors4.forEach((c, i) => lgGrad.addColorStop(i / (colors4.length - 1), c));
+    ctx.fillStyle = lgGrad;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(lx, ly, legendW, 8, 3);
+    else ctx.rect(lx, ly, legendW, 8);
+    ctx.fill();
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '9px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('Incidents', lx, ly - 14);
+    ctx.fillText('0', lx, ly - 4);
+    ctx.textAlign = 'right';
+    ctx.fillText(canvas._legendMax ?? '', lx + legendW, ly - 4);
 
-    // Drag
-    svg.call(
-      d3.drag()
-        .on('start', () => {
-          stopSpin();
-          hoveredCountryRef.current = null;
-          setTooltip(null);
-          svg.style('cursor', 'grabbing');
-        })
-        .on('drag', (event) => {
-          rotationRef.current = [
-            rotationRef.current[0] + event.dx * 0.4,
-            Math.max(-90, Math.min(90, rotationRef.current[1] - event.dy * 0.4)),
-          ];
-          drawPaths();
-        })
-        .on('end', () => svg.style('cursor', 'grab'))
-    );
-    svg.style('cursor', 'grab');
-  }, [drawPaths]);
+    ctx.restore();
+  }, [rebuildColors]);
 
+  // Schedule a draw on the next animation frame, coalescing rapid calls
+  const scheduleFrame = useCallback(() => {
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      drawFrame();
+    });
+  }, [drawFrame]);
+
+  // ── Hit test: which country is under (x, y) in CSS pixels ────────────────
+  const countryAtPoint = useCallback((cssX, cssY) => {
+    if (!featuresRef.current.length) return null;
+    const dpr  = window.devicePixelRatio || 1;
+    const px   = cssX * dpr;
+    const py   = cssY * dpr;
+    const { width, height } = dimsRef.current;
+    const radius = Math.min(width, height) / 2 - 10;
+
+    // Scratch canvas for hit-testing (never shown)
+    const scratch = document.createElement('canvas');
+    scratch.width  = Math.ceil(width  * dpr);
+    scratch.height = Math.ceil(height * dpr);
+    const sctx = scratch.getContext('2d');
+    sctx.scale(dpr, dpr);
+
+    const proj = d3.geoOrthographic()
+      .scale(radius)
+      .translate([width / 2, height / 2])
+      .rotate([rotationRef.current[0], rotationRef.current[1], 0])
+      .clipAngle(90);
+    const path = d3.geoPath(proj, sctx);
+
+    for (let i = featuresRef.current.length - 1; i >= 0; i--) {
+      sctx.beginPath();
+      path(featuresRef.current[i]);
+      if (sctx.isPointInPath(px, py)) return featuresRef.current[i];
+    }
+    return null;
+  }, []);
+
+  // ── Canvas init: size + event wiring ────────────────────────────────────
+  const initCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const { width, height } = dimsRef.current;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = Math.ceil(width  * dpr);
+    canvas.height = Math.ceil(height * dpr);
+    canvas.style.width  = width  + 'px';
+    canvas.style.height = height + 'px';
+  }, []);
+
+  // ── Spin & stop ──────────────────────────────────────────────────────────
   const stopSpin = useCallback(() => {
     if (spinTimerRef.current) { spinTimerRef.current.stop(); spinTimerRef.current = null; }
     setIsSpinning(false);
@@ -243,36 +265,128 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
   const startSpin = useCallback(() => {
     if (spinTimerRef.current) return;
     spinTimerRef.current = d3.timer(() => {
-      hoveredCountryRef.current = null;
-      setTooltip(null);
-      rotationRef.current = [rotationRef.current[0] + 0.3, rotationRef.current[1]];
-      drawPaths();
+      hoveredRef.current = null;
+      rotationRef.current[0] += 0.25;
+      scheduleFrame();
     });
     setIsSpinning(true);
-  }, [drawPaths]);
+  }, [scheduleFrame]);
 
-  // Load world once
+  // ── Wire drag + hover once on mount ─────────────────────────────────────
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // Shared projection reused by drawFrame (avoids creating one per frame)
+    projectionRef.current = d3.geoOrthographic().clipAngle(90);
+
+    let isDragging = false;
+
+    const onMouseMove = (event) => {
+      if (isDragging) return; // handled by drag
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const f = countryAtPoint(x, y);
+      const name = f?.properties?.name ?? null;
+      if (name !== hoveredRef.current) {
+        hoveredRef.current = name;
+        scheduleFrame();
+      }
+      if (name) {
+        const t   = selectedTypeRef.current;
+        const val = (intensityRef.current?.[t] || {})[name] || 0;
+        const tot = totalRef.current;
+        const pct = tot > 0 ? ((val / tot) * 100).toFixed(2) : '0.00';
+        setTooltip({ x: event.clientX, y: event.clientY, name, val, pct });
+      } else {
+        setTooltip(null);
+      }
+    };
+
+    const onMouseLeave = () => {
+      hoveredRef.current = null;
+      setTooltip(null);
+      scheduleFrame();
+    };
+
+    const onClick = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const f = countryAtPoint(event.clientX - rect.left, event.clientY - rect.top);
+      if (!f) return;
+      const name = f.properties?.name;
+      const t    = selectedTypeRef.current;
+      const val  = (intensityRef.current?.[t] || {})[name] || 0;
+      const tot  = totalRef.current;
+      const pct  = tot > 0 ? ((val / tot) * 100).toFixed(2) : '0.00';
+      const sources = sourcesRef.current?.[name] || {};
+      setPinnedCountry(p => p?.name === name ? null : { name, val, pct, sources });
+    };
+
+    canvas.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('mouseleave', onMouseLeave);
+    canvas.addEventListener('click', onClick);
+
+    // D3 drag — no hit-testing during drag, just rotate + redraw
+    d3.select(canvas).call(
+      d3.drag()
+        .on('start', () => {
+          isDragging = true;
+          stopSpin();
+          hoveredRef.current = null;
+          setTooltip(null);
+          canvas.style.cursor = 'grabbing';
+        })
+        .on('drag', (event) => {
+          rotationRef.current[0] += event.dx * 0.4;
+          rotationRef.current[1] = Math.max(-90, Math.min(90, rotationRef.current[1] - event.dy * 0.4));
+          scheduleFrame();
+        })
+        .on('end', () => {
+          isDragging = false;
+          canvas.style.cursor = 'grab';
+        })
+    );
+    canvas.style.cursor = 'grab';
+
+    return () => {
+      canvas.removeEventListener('mousemove', onMouseMove);
+      canvas.removeEventListener('mouseleave', onMouseLeave);
+      canvas.removeEventListener('click', onClick);
+      d3.select(canvas).on('.drag', null);
+    };
+  }, [countryAtPoint, scheduleFrame, stopSpin]);
+
+  // ── Load world data once ─────────────────────────────────────────────────
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
     fetch(`${base}data/countries-50m.json`)
       .then(r => r.json())
       .then(w => {
         worldRef.current = w;
-        initSvg();
-        drawPaths();
+        featuresRef.current = topojson.feature(w, w.objects.countries)
+          .features.filter(f => f.id !== undefined);
+        graticuleRef.current = d3.geoGraticule()();
+        initCanvas();
+        scheduleFrame();
       });
-    return () => stopSpin();
-  }, [initSvg, drawPaths, stopSpin]);
+    return () => {
+      stopSpin();
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Re-init on resize
+  // ── Resize ───────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (worldRef.current) { initSvg(); drawPaths(); }
-  }, [dims, initSvg, drawPaths]);
+    if (!featuresRef.current.length) return;
+    initCanvas();
+    scheduleFrame();
+  }, [dims, initCanvas, scheduleFrame]);
 
-  // Redraw on type or data change
+  // ── Redraw on type / data change ─────────────────────────────────────────
   useEffect(() => {
-    if (worldRef.current) drawPaths();
-  }, [selectedType, countryIntensity, drawPaths]);
+    if (featuresRef.current.length) scheduleFrame();
+  }, [selectedType, countryIntensity, scheduleFrame]);
 
   return (
     <div style={{ width: '100%' }} ref={containerRef}>
@@ -280,9 +394,9 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14, alignItems: 'center' }}>
         {ATTACK_TYPES.map(t => (
           <button key={t} onClick={() => setSelectedType(t)} style={{
-            background:  selectedType === t ? '#00ffe722' : '#14172044',
-            border:      `1.5px solid ${selectedType === t ? '#00ffe7' : '#1e2330'}`,
-            color:       selectedType === t ? '#00ffe7' : '#4a5568',
+            background: selectedType === t ? '#00ffe722' : '#14172044',
+            border:     `1.5px solid ${selectedType === t ? '#00ffe7' : '#1e2330'}`,
+            color:      selectedType === t ? '#00ffe7' : '#4a5568',
             padding: '4px 14px', borderRadius: 6, cursor: 'pointer',
             fontFamily: 'inherit', fontSize: 12, fontWeight: 600, transition: 'all 0.2s',
           }}>{t}</button>
@@ -291,21 +405,19 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
           <button onClick={() => isSpinning ? stopSpin() : startSpin()} style={{
             ...ctrlBtn,
             borderColor: isSpinning ? '#00ffe7' : '#1e2330',
-            color: isSpinning ? '#00ffe7' : '#8b9bbf',
+            color:       isSpinning ? '#00ffe7' : '#8b9bbf',
           }}>
             {isSpinning ? '⏸ Stop' : '▶ Auto-spin'}
           </button>
-          <button onClick={() => { rotationRef.current = [0, -20]; drawPaths(); }} style={ctrlBtn}>
+          <button onClick={() => { rotationRef.current = [0, -20]; scheduleFrame(); }} style={ctrlBtn}>
             ⟳ Reset
           </button>
           <span style={{ fontSize: 11, color: '#2a3040' }}>Drag · Click to pin</span>
         </div>
       </div>
 
-      {/* Globe */}
-      <div onMouseLeave={() => setTooltip(null)}>
-        <svg ref={svgRef} style={{ width: '100%', display: 'block', borderRadius: 12 }} />
-      </div>
+      {/* Globe — canvas */}
+      <canvas ref={canvasRef} style={{ width: '100%', display: 'block', borderRadius: 12 }} />
 
       {/* Tooltip portal */}
       {tooltip && createPortal(
@@ -329,7 +441,7 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
         document.body
       )}
 
-      {/* Pinned country */}
+      {/* Pinned country card */}
       {pinnedCountry && (
         <div style={{
           marginTop: 16, background: '#0a0c10',
@@ -369,9 +481,3 @@ export default function ChoroplethMap({ countryIntensity, countrySources }) {
     </div>
   );
 }
-
-const ctrlBtn = {
-  background: '#14172088', border: '1px solid #1e2330', color: '#8b9bbf',
-  cursor: 'pointer', fontSize: 12, borderRadius: 4, padding: '4px 10px',
-  fontFamily: 'inherit', transition: 'all 0.2s',
-};
