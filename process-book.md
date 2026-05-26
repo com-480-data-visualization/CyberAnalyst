@@ -83,7 +83,7 @@ The US and Ukraine absorb the largest share of global attacks. Switching to Expl
 
 ![Network graph - sketch](docs/sketches/NetworkGraph.png){ width=47% } ![Network graph - final](docs/screenshots/network-final.png){ width=50% }
 
-*Left: original force-directed sketch (Milestone 1). Right: final fixed-depth layout.*
+*Left: original force-directed sketch (Milestone 1). Right: final radial circle layout.*
 
 **What was planned:**
 A node-link graph starting from a root node representing total cybercrime in Switzerland, branching into main categories and then subcategories, with node size proportional to incident count.
@@ -92,9 +92,9 @@ A node-link graph starting from a root node representing total cybercrime in Swi
 
 Force-directed layouts are non-deterministic: nodes settle in different positions each render, and the hierarchy is not immediately legible. For a 10-node tree-structured dataset this is particularly harmful - the depth relationship between root, category, and subcategory is the entire point of the visualization.
 
-We switched to a **fixed depth-based layout**: depth 0 (root) at the top, depth 1 (main categories) in the middle row, depth 2 (subcategories) at the bottom. The hierarchical structure is instantly clear, and positions are stable across screen sizes.
+We went through two layout iterations. First, a **fixed depth-based layout** with root at the top and subcategories in a bottom row. While stable, the horizontal arrangement felt rigid and left large areas of whitespace. We then redesigned as a **radial circle layout**: the root circle sits at the centre (radius R0), the three main categories orbit it at radius R1, and the eleven subcategory leaves are equally distributed around the full circumference at radius R2 using equal-arc spacing `angle = (2*pi (x) (i + 0.5)) / nLeaves`. Parent angles are assigned using a circular mean of their children's angles (handling wraparound correctly). Edges are offset to the boundary of each circle (not center-to-center) so they visually connect the rings cleanly. Node sizes encode incident volume.
 
-The **click-to-highlight path** feature was not in the original sketch and was added during implementation. When a user clicks any node, all nodes outside its root-to-leaf path fade to near-invisible, and the connecting links glow. This lets users immediately answer questions like "what percentage of Swiss cybercrime is phishing?" with a single click - the answer is visible in the node label without any calculation.
+The **click-to-highlight path** feature was not in the original sketch and was added during implementation. When a user clicks any node, all nodes outside its root-to-leaf path fade to near-invisible, and the connecting links glow. This lets users immediately answer questions like "what percentage of Swiss cybercrime is phishing?" with a single click.
 
 **Key insight the visualization reveals:**
 Cyber Fraud dominates at 84% of all Swiss cybercrime reports. Within fraud, Phishing (4.3k), Investment Scams (3.2k), and Romance Scams (1.2k) are the three largest subcategories - all financial in nature, exploiting trust rather than technical vulnerabilities.
@@ -120,11 +120,13 @@ The 35–44 cohort files 22.1% of all cybercrime reports - the highest of any ag
 
 ## 3. Technical Implementation
 
-**Stack:** React 18 + Vite 5 (SPA), D3.js v7 (all visualizations), TopoJSON (world geometry), GitHub Actions (CI/CD), GitHub Pages (hosting).
+**Stack:** React 18 + Vite 5 (SPA), D3.js v7 (all visualizations), TopoJSON (world geometry), HTML Canvas 2D API (globe renderer, animated background), Google Fonts — Orbitron / Jura / JetBrains Mono, GitHub Actions (CI/CD), GitHub Pages (hosting).
 
 ### Architecture
 
 All four visualizations are independent React components, each managing their own D3 instance via `useRef` and `useEffect`. Data is loaded once in `App.jsx` and passed as props - this avoids duplicate fetch calls and keeps state management simple. Tooltips in every component are rendered via React's `createPortal` at the document root to avoid coordinate offset issues.
+
+The globe (`ChoroplethMap.jsx`) is the exception to the D3/SVG model: it renders entirely on a `<canvas>` element using `d3.geoPath(projection, ctx)`. A `scheduleFrame()` helper coalesces multiple state changes into a single `requestAnimationFrame` call. An off-screen scratch canvas performs `isPointInPath()` hit-testing on click without affecting the visible render. The animated background (`backgrounds/nodeNetwork.js`) runs on a second full-screen canvas underneath React's `#root`, started once at module load and never touched by the React tree.
 
 ### Challenge 1 - Timezone bug causing a flat streamgraph
 
@@ -174,19 +176,50 @@ Hovering a country then rotating the globe left the cyan stroke permanently on t
 
 **Fix:** Track the hovered country in a `hoveredCountryRef`. Every `drawPaths()` frame re-applies stroke based on the ref, so a stale highlight cannot survive a rotation. The ref is cleared on drag start and during auto-spin. `drawPaths()` is called manually on `mouseover` and `mouseout` to keep the highlight instant when the globe is stationary.
 
+### Challenge 9 - Globe tooltip disappearing during drag
+
+The country tooltip stopped appearing as soon as the user started dragging the globe. D3's drag handler captures the pointer event at drag start, preventing any `mousemove` events from reaching the canvas or the React synthetic event system during the drag gesture.
+
+**Fix:** Add tooltip update logic directly inside the D3 drag `.on('drag')` handler using `event.sourceEvent.clientX / clientY`. The tooltip now updates continuously while dragging, reading the country under the pointer from `countryAtPoint()` on every drag frame.
+
+### Challenge 10 - Globe performance dropping to ~10fps during drag
+
+The original globe used D3/SVG. During drag, React re-renders triggered by rotation state updates forced a full virtual DOM diff and SVG repaint each frame. On large world topologies (240 country paths), this consistently dropped to 10fps, making the interaction feel unresponsive.
+
+**Fix:** Rewrote the globe entirely as a **canvas 2D renderer** using `d3.geoPath(projection, ctx)`. Key optimizations:
+- `scheduleFrame()` coalesces rapid calls via a single `requestAnimationFrame` handle, preventing double-renders.
+- `isDragging` flag skips the expensive `countryAtPoint()` hit-test during drag (no click/hover needed mid-drag).
+- `projectionRef` is mutated in-place each frame rather than replaced, avoiding object allocation.
+- `colorCacheRef` is a pre-built country-name → hex lookup rebuilt only when the attack type changes.
+- An off-screen scratch canvas handles `isPointInPath()` hit testing on click.
+
+### Challenge 11 - Vite build overwriting source index.html
+
+Running `vite build` with `outDir: './'` (the default when building into the same `docs/` folder) wrote the compiled `index.html` over the source `index.html`, replacing `<script type="module" src="/src/main.jsx">` with hashed bundle references. Subsequent `git status` showed a modified `index.html`; pushing it broke the dev server for all contributors.
+
+**Fix:** Changed `outDir` to `'dist'` in `vite.config.js` so build output goes to `docs/dist/` and never touches the source files. Updated the GitHub Actions workflow to upload `docs/dist` instead of `docs`.
+
+### Challenge 12 - CSS opacity layer blocking background canvas
+
+After implementing the animated canvas background, the page appeared identical to the plain dark background. The canvas was rendering correctly (verified via DevTools), but was completely hidden.
+
+**Fix:** The `#root` div had `background: var(--bg)` — a solid opaque dark color — set in `index.css`. This covered the entire canvas. Setting `#root { background: transparent }` and removing the `background` from the `:root` CSS variables block made all canvas layers visible. The actual page background color is now set exclusively on `<body>` via the injected style sheet in `main.jsx`.
+
 
 ## 4. Design Decisions
 
-**Dark cyber aesthetic:** Background `#0a0c10`, accent `#00ffe7` (cyan), JetBrains Mono monospace font throughout. The palette reinforces the subject matter and gives the project a distinctive identity. The monospace font evokes a terminal or security dashboard without sacrificing readability at body text sizes. Every section uses a numbered badge with a pulse animation, reinforcing the "active monitoring" metaphor.
+**Visual identity — dark teal terminal aesthetic:** Background `#060e0c` (dark teal-black), accent `#00ffb4` (mint teal), display type Orbitron (headings), UI type Jura (body), data type JetBrains Mono (numbers and axes). The palette is inspired by professional cybersecurity dashboard products: deep teal shadows read as "night mode active terminal" rather than generic dark mode. The mint accent is warmer than pure cyan, reducing eye fatigue during extended reading while remaining strongly associated with security UIs. Every section uses a numbered badge with a pulse animation, reinforcing the "active monitoring" metaphor.
+
+The animated **node network background** is drawn on a full-screen HTML canvas with three depth layers: far nodes are small, slow, and dim; near nodes are large, fast, and fully bright. Pulse waves propagate from randomly triggered source nodes, rendered as expanding concentric rings that fade as they travel. The network reacts to mouse movement — near-layer nodes repel away from the cursor — and clicking anywhere spawns a new pulse ring. This gives the page a sense of being alive without distracting from the data content above.
 
 **Consistent color system across all charts:**
 
-- Blue (`#3b82f6`) - Disruption attacks
+- Amber (`#f59e0b`) - Disruption attacks
 - Red (`#ef4444`) - Exploitation attacks
 - Green (`#22c55e`) - Info-Ops attacks
-- Cyan (`#00ffe7`) - UI accent, peak highlights
+- Mint (`#00ffb4`) - UI accent, peak highlights
 
-The same four colors appear in the streamgraph bands, the globe's filter buttons, and the network graph node borders. Users build a mental model from the streamgraph that transfers directly to the globe's attack type toggles - they already know blue means disruption before they click the button.
+The Disruption color was changed from blue to amber after user feedback noted it was too similar to the "All" category blue (`#3b82f6`) when both appeared on the globe's toggle buttons simultaneously. Amber is perceptually distant from blue and red while still reading as "alert/warning" - consistent with the disruption framing. The same colors appear in the streamgraph bands, the globe's filter buttons, and the network graph node borders. Users build a mental model from the streamgraph that transfers directly to the globe's attack type toggles.
 
 **Streamgraph over line chart:** Simultaneously encodes total volume and composition shift in a single view. The Disruption band doubling in February 2022 is visible without any annotation. A multi-line chart would require mental arithmetic to reconstruct total volume from individual series.
 
@@ -210,6 +243,12 @@ The same four colors appear in the streamgraph bands, the globe's filter buttons
 **React StrictMode:** In development, React StrictMode double-invokes all `useEffect` calls to detect side effects. This caused `initSvg()` to run twice: the second invocation cleared the SVG and ran a new initialization cycle immediately after the first `drawPaths()` had populated it, resulting in a blank globe and broken event handlers. We removed StrictMode and added an explicit error boundary that renders stack traces during development instead.
 
 **Data volume and fetch strategy:** The EuRepoC dataset in raw form is several megabytes of JSON with 60+ columns per incident, most of which are irrelevant to our visualizations. We preprocessed it into two lean files: `graph1.json` (monthly aggregates by attack type for the streamgraph) and `country-intensity.json` (per-country totals). This reduced the total data transferred on page load from ~8MB to under 200KB.
+
+**SVG globe → Canvas globe rewrite:** The SVG globe was correct but slow. During drag, React state updates triggered re-renders that forced a full SVG diff at 60fps — dropping to ~10fps on a standard laptop. We rewrote the renderer entirely in Canvas 2D, which removes React from the render loop entirely. The globe now runs at a stable 60fps even on lower-end hardware. This was the largest single refactor of the project — approximately 400 lines of SVG/React code replaced by a canvas renderer with manual hit-testing.
+
+**Network graph layout iterations:** The network graph went through three layout strategies before the final radial design. Force-directed was the first attempt (non-deterministic, hierarchy lost). A fixed horizontal depth layout was the second (stable but rigid). The final radial circle layout places the root at center and distributes leaves with equal angular spacing — the circular form reinforces the "everything connects to the centre" message of the dataset, and the curved edges give it an organic quality absent from the grid layout.
+
+**Tooltip architecture:** Every chart initially rendered tooltips as absolutely-positioned `<div>` elements inside the chart's own container. When charts were placed in `overflow: hidden` cards, tooltips were clipped. When cards had `transform` CSS, fixed positioning broke. The unified solution — `createPortal(tooltip, document.body)` with `position: fixed` and `event.clientX / clientY` coordinates — was applied to all four charts and the globe's drag handler.
 
 
 ## 6. Peer Assessment
@@ -235,5 +274,6 @@ All three team members contributed equally to the project (approximately one thi
 - React 18 - https://react.dev
 - Vite 5 - https://vitejs.dev
 - TopoJSON - https://github.com/topojson/topojson
+- Google Fonts (Orbitron, Jura, JetBrains Mono) - https://fonts.google.com
 - GitHub Actions - https://docs.github.com/actions
 - GitHub Pages - https://pages.github.com
