@@ -71,7 +71,7 @@ Event labels moved from inline text (which overlapped on a narrow axis) to **num
 
 ## Visualization 3a: Network Graph: Swiss Cybercrime Structure
 
-![Network graph sketch (Milestone 1)](docs/sketches/NetworkGraph.png){ width=47% } ![Network graph final implementation](docs/screenshots/network-final.png){ width=50% }
+![Network graph sketch (Milestone 1)](docs/sketches/NetworkGraph.png){ width=47% } ![Network graph final implementation](docs/screenshots/network-final-new.png){ width=50% }
 
 *Left: original force-directed sketch. Right: final radial circle layout.*
 
@@ -84,7 +84,7 @@ Event labels moved from inline text (which overlapped on a narrow axis) to **num
 
 ## Visualization 3b: Bar Chart: Age Susceptibility
 
-![Age chart sketch (Milestone 1)](docs/sketches/AgeGraph.png){ width=47% } ![Age chart final implementation](docs/screenshots/age-final.png){ width=50% }
+![Age chart sketch (Milestone 1)](docs/sketches/AgeGraph.png){ width=47% } ![Age chart final implementation](docs/screenshots/age-final-new.png){ width=50% }
 
 *Left: original sketch. Right: final implementation with animated bars and peak highlight.*
 
