@@ -35,7 +35,7 @@ export default function AgeChart({ data: AGE_DATA }) {
       const w = entries[0].contentRect.width;
       if (w > 0) setDims({ width: w, height: Math.max(380, w * 0.52) });
     });
-    if (containerRef.current) ro.observe(containerRef.current);
+    if (svgRef.current) ro.observe(svgRef.current);
     return () => ro.disconnect();
   }, []);
 
@@ -48,7 +48,7 @@ export default function AgeChart({ data: AGE_DATA }) {
 
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
-    svg.attr('width', width).attr('height', height);
+    svg.attr('width', '100%').attr('height', height).attr('viewBox', `0 0 ${width} ${height}`);
 
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
