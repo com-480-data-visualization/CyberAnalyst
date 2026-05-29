@@ -14,7 +14,7 @@ CyberAnalyst is an interactive data story that takes you from the macro-level sh
 
 1. **The Global Pulse** — monthly attack volumes by category from 2018 to 2024, anchored to real geopolitical events
 2. **Attack Intensity by Country** — which nations are most targeted, who is behind the attacks, and how the picture shifts between disruption and espionage
-3. **Switzerland: A Domestic Deep Dive** — cantonal police data revealing the structure of local cybercrime and the age groups most at risk
+3. **Switzerland: A Domestic Deep Dive** — national FSO Police Crime Statistics revealing the structure of local cybercrime and the age groups most at risk
 
 ---
 
@@ -33,7 +33,7 @@ CyberAnalyst is an interactive data story that takes you from the macro-level sh
 
 | Dataset | Source | Coverage | Records |
 |---------|--------|----------|---------|
-| EuRepoC Global Cyber Incidents v1.3 | [eurepoc.eu](https://eurepoc.eu) | 2000–2024, 160+ countries | 6,000+ incidents, 60+ variables |
+| EuRepoC Global Cyber Incidents v1.3 | [eurepoc.eu](https://eurepoc.eu) | 2000–2024, 180+ countries | 3,414 incidents, 60+ variables |
 | Digital crime: Offences by modus operandi | [opendata.swiss](https://opendata.swiss/de/dataset/digitale-kriminalitat-straftaten-nach-modusgruppe/resource/95b86043-256d-4fad-a42b-7e3d36d75f70) | 2020–2024, all Swiss cantons | ~190,000 cybercrime records |
 
 ---
@@ -76,7 +76,9 @@ docs/
 │   ├── graph1.json                    # streamgraph monthly data
 │   ├── country-intensity-by-type.json # globe intensity per attack type
 │   ├── country-sources.json           # top threat actors per country
-│   └── countries-50m.json             # TopoJSON world map
+│   ├── countries-50m.json             # TopoJSON world map
+│   ├── network-graph.json             # Swiss crime hierarchy (FSO 2020–2024)
+│   └── age-chart.json                 # Swiss victim age breakdown (FSO 2020–2024)
 └── screenshots/                 # process book figures
 process-book.pdf                 # 8-page process book
 ```

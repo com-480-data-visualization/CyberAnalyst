@@ -31,11 +31,11 @@ We structured the narrative in three acts, moving from the global to the local:
 
 1. **The Global Pulse**, monthly attack volumes by category from 2018 to 2024, anchored to real geopolitical events
 2. **Attack Intensity by Country**, which nations are most targeted and who is behind the attacks
-3. **Switzerland: A Domestic Deep Dive**, Swiss cantonal cybercrime data revealing the structure of local cybercrime and the age groups most at risk
+3. **Switzerland: A Domestic Deep Dive**, national FSO Police Crime Statistics revealing the structure of local cybercrime and the age groups most at risk
 
 **Datasets:**
 
-- **EuRepoC Global Cyber Incidents v1.3** - 6,000+ incidents from 2000 to 2024, with 60+ variables including attack type, actor, target country, intensity score, and attribution method. Maintained by a consortium of European universities tracking state-sponsored and politically motivated cyber operations globally. The main data quality issue is `economic_impact`, missing in approximately 48% of rows, reflecting how rarely financial damage figures are publicly disclosed.
+- **EuRepoC Global Cyber Incidents v1.3** - 3,414 incidents from 2000 to 2024, with 60+ variables including attack type, actor, target country, intensity score, and attribution method. Maintained by a consortium of European universities tracking state-sponsored and politically motivated cyber operations globally. The main data quality issue is `economic_impact`, missing in approximately 48% of rows, reflecting how rarely financial damage figures are publicly disclosed.
 
 - **Digital crime: Offences by modus operandi** - around 190,000 cybercrime records from 2020 to 2024, covering the entirety of cyber attacks across Switzerland. Published under an open data licence via opendata.swiss, the dataset spans all Swiss cantons and serves the same purpose as our former Zurich dataset, but at national scale.
 
@@ -79,7 +79,7 @@ Event labels moved from inline text (which overlapped on a narrow axis) to **num
 
 **What changed and why:** Force-directed layouts are non-deterministic, for a strict 10-node hierarchy, the depth relationship is the entire point. We iterated through a **fixed depth-based layout** (stable but rigid), then a **radial circle layout**: root at centre, categories at R1, eleven subcategory leaves equally distributed at R2 using arc spacing `angle = (2*pi*(i+0.5))/nLeaves`. Edges connect circle boundaries rather than centres. A **click-to-highlight path** feature fades all nodes outside the selected root-to-leaf path.
 
-**Key insight:** Cyber Fraud dominates at 84% of all Swiss reports, led by Phishing (4.3k), Investment Scams (3.2k), and Romance Scams (1.2k).
+**Key insight:** Property crime dominates at 78% of all Swiss digital offences (2020–2024), with Cyber Fraud alone accounting for 132k out of 190k total incidents. Core cybercrime (Phishing, Hacking, Malware, DDoS) represents 11%.
 
 
 ## Visualization 3b: Bar Chart: Age Susceptibility
@@ -90,9 +90,9 @@ Event labels moved from inline text (which overlapped on a narrow axis) to **num
 
 **What was planned:** A bar chart showing how different age ranges are affected by cybercrime in Switzerland.
 
-**What changed and why:** Implementation stayed close to the sketch. The key decision was **highlighting the peak bar** (35-44) in mint while keeping all others in blue, the answer to "who is most at risk?" is visible in under a second. Percentage labels sit on top of each bar and bars animate upward on page load.
+**What changed and why:** Implementation stayed close to the sketch. The key decision was **highlighting the peak bar** (35–49) in mint while keeping all others in blue, the answer to "who is most at risk?" is visible in under a second. Percentage labels sit on top of each bar and bars animate upward on page load.
 
-**Key insight:** The 35-44 cohort files 22.1% of all reports. Under-25s are underrepresented (7.4% for 18-24), likely because they have fewer financial assets to target and are more sceptical of scams.
+**Key insight:** The 35–49 cohort accounts for 28.6% of all tracked victims (2020–2024). Minors under 18 are underrepresented at 3.6%, while the 70+ group represents 9.4%, disproportionately affected by tech support scams and romance fraud.
 
 # 3. Technical Implementation
 

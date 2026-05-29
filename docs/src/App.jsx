@@ -201,10 +201,10 @@ export default function App() {
         </p>
 
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <StatBadge value={6000} suffix="+" label="Global incidents"  color="#00ffb4" delay={0.0} />
-          <StatBadge value={2024}         label="Up to year"          color="#3b82f6" delay={0.2} />
-          <StatBadge value={190967}       label="Swiss reports"       color="#ef4444" delay={0.4} />
-          <StatBadge value={160}  suffix="+" label="Countries"        color="#22c55e" delay={0.6} />
+          <StatBadge value={3414}          label="Global incidents"  color="#00ffb4" delay={0.0} />
+          <StatBadge value={2024}          label="Up to year"        color="#3b82f6" delay={0.2} />
+          <StatBadge value={190967}        label="Swiss reports"     color="#ef4444" delay={0.4} />
+          <StatBadge value={180}  suffix="+" label="Countries"       color="#22c55e" delay={0.6} />
         </div>
 
         <div style={{ marginTop: 44, color: '#2a3040', fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
