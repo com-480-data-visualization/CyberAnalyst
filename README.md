@@ -91,6 +91,12 @@ See [process-book.pdf](process-book.pdf) for the full design process — origina
 
 ---
 
+## Screencast
+
+See [screencast.mp4](screencast.mp4) for a vidéo recording of the website showing off a couple of ways to interact with it. 
+
+---
+
 ## Team
 
 | Member | Contributions |
