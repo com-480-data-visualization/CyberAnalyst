@@ -2,42 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import * as d3 from 'd3';
 
-// ── Data ──────────────────────────────────────────────────────────────────────
-const TOTAL = 14087;
-
-const TREE = {
-  id: 'root', label: 'Total Cybercrime', count: TOTAL,
-  children: [
-    {
-      id: 'fraud', label: 'Cyber Fraud', count: 11844, color: '#ef4444',
-      children: [
-        { id: 'phishing',   label: 'Phishing',          count: 4300 },
-        { id: 'investment', label: 'Investment Scam',    count: 3200 },
-        { id: 'romance',    label: 'Romance Scam',       count: 1200 },
-        { id: 'advance',    label: 'Advance-Fee Fraud',  count: 980  },
-        { id: 'ceo',        label: 'CEO / BEC Fraud',    count: 860  },
-        { id: 'ecommerce',  label: 'E-Commerce Fraud',   count: 780  },
-      ],
-    },
-    {
-      id: 'core', label: 'Core Cybercrime', count: 1594, color: '#22c55e',
-      children: [
-        { id: 'malware', label: 'Malware',        count: 700 },
-        { id: 'unauth',  label: 'Unauth. Access', count: 500 },
-        { id: 'ddos',    label: 'DDoS',           count: 394 },
-      ],
-    },
-    {
-      id: 'sexual', label: 'Sexual Offences', count: 649, color: '#a855f7',
-      children: [
-        { id: 'sextortion', label: 'Sextortion', count: 339 },
-        { id: 'grooming',   label: 'Grooming',   count: 310 },
-      ],
-    },
-  ],
-};
-
-const CAT_COLOR = { fraud: '#ef4444', core: '#22c55e', sexual: '#a855f7' };
+const CAT_COLOR = { property: '#ef4444', core: '#22c55e', sexual: '#a855f7', defamation: '#f59e0b' };
 
 function nodeColor(d) {
   if (d.depth === 0) return '#00ffe7';
@@ -53,7 +18,7 @@ function getFamily(node) {
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export default function NetworkGraph() {
+export default function NetworkGraph({ data: TREE }) {
   const svgRef       = useRef(null);
   const containerRef = useRef(null);
   const [tooltip,  setTooltip]  = useState(null);
@@ -70,6 +35,7 @@ export default function NetworkGraph() {
   }, []);
 
   useEffect(() => {
+    if (!TREE) return;
     const { width, height } = dims;
     const cx = width / 2;
     const cy = height / 2;
@@ -125,11 +91,11 @@ export default function NetworkGraph() {
     const family  = selNode ? getFamily(selNode) : null;
 
     const rScale = d3.scaleSqrt()
-      .domain([0, TOTAL])
+      .domain([0, TREE.count])
       .range([8, R0]);
 
     const linkW = d3.scaleSqrt()
-      .domain([0, TOTAL])
+      .domain([0, TREE.count])
       .range([1, 7]);
 
     // ── Defs ─────────────────────────────────────────────────────────────────
@@ -196,7 +162,7 @@ export default function NetworkGraph() {
         .attr('transform', `translate(${n._x},${n._y})`)
         .style('cursor', 'pointer')
         .on('mouseover', (event) => {
-          const pct = ((n.data.count / TOTAL) * 100).toFixed(1);
+          const pct = ((n.data.count / TREE.count) * 100).toFixed(1);
           setTooltip({ x: event.clientX, y: event.clientY, label: n.data.label, count: n.data.count, pct, color: col });
         })
         .on('mousemove', (event) => {
@@ -256,7 +222,7 @@ export default function NetworkGraph() {
 
         // Per-node overrides: force label to a specific side
         // 'start' = text flows right from offset point, 'end' = text flows left
-        const sideOverride = { sexual: 'right', core: 'right' }; // force label to the right of the node
+        const sideOverride = { sexual: 'right', core: 'right', defamation: 'right' }; // force label to the right of the node
         const side = sideOverride[n.data.id];
 
         let lDist = r + 16;
@@ -311,24 +277,30 @@ export default function NetworkGraph() {
       }
     });
 
-  }, [dims, selected]);
+  }, [dims, selected, TREE]);
+
+  if (!TREE) return null;
+
+  const allTreeNodes = TREE.children
+    ? TREE.children.flatMap(c => [c, ...(c.children || [])]).concat([TREE])
+    : [TREE];
 
   return (
     <div style={{ position: 'relative' }} ref={containerRef}>
       {/* Legend */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-        {Object.entries(CAT_COLOR).map(([id, color]) => {
-          const label = TREE.children.find(c => c.id === id)?.label;
+        {(TREE.children || []).map(child => {
+          const color = CAT_COLOR[child.id] ?? '#8b9bbf';
           return (
-            <div key={id} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div key={child.id} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{ width: 10, height: 10, borderRadius: '50%', background: color, boxShadow: `0 0 6px ${color}` }} />
-              <span style={{ fontSize: 11, color: '#4a5568' }}>{label}</span>
+              <span style={{ fontSize: 11, color: '#4a5568' }}>{child.label}</span>
             </div>
           );
         })}
         <span style={{ fontSize: 11, color: '#2a3040', marginLeft: 'auto' }}>
           {selected
-            ? `Path: ${TREE.children.flatMap(c => [c, ...c.children]).concat([TREE]).find(n => n.id === selected)?.label} · Click again to reset`
+            ? `Path: ${allTreeNodes.find(n => n.id === selected)?.label} · Click again to reset`
             : 'Node size = incident count · Click to highlight path'}
         </span>
       </div>

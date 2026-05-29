@@ -1,0 +1,86 @@
+[
+  {
+    "group": "<18",
+    "Cyber Fraud": 2107,
+    "Phishing": 178,
+    "Hacking": 110,
+    "DDoS": 0,
+    "Sextortion (\u20ac)": 598,
+    "Sexual Offences": 844,
+    "Defamation": 243,
+    "total": 4080,
+    "pct": 3.6
+  },
+  {
+    "group": "18\u201324",
+    "Cyber Fraud": 10358,
+    "Phishing": 978,
+    "Hacking": 323,
+    "DDoS": 1,
+    "Sextortion (\u20ac)": 1318,
+    "Sexual Offences": 96,
+    "Defamation": 390,
+    "total": 13464,
+    "pct": 11.9
+  },
+  {
+    "group": "25\u201334",
+    "Cyber Fraud": 18490,
+    "Phishing": 1642,
+    "Hacking": 611,
+    "DDoS": 5,
+    "Sextortion (\u20ac)": 780,
+    "Sexual Offences": 62,
+    "Defamation": 536,
+    "total": 22126,
+    "pct": 19.6
+  },
+  {
+    "group": "35\u201349",
+    "Cyber Fraud": 27615,
+    "Phishing": 2327,
+    "Hacking": 863,
+    "DDoS": 6,
+    "Sextortion (\u20ac)": 663,
+    "Sexual Offences": 58,
+    "Defamation": 758,
+    "total": 32290,
+    "pct": 28.6
+  },
+  {
+    "group": "50\u201359",
+    "Cyber Fraud": 15411,
+    "Phishing": 1429,
+    "Hacking": 475,
+    "DDoS": 3,
+    "Sextortion (\u20ac)": 369,
+    "Sexual Offences": 15,
+    "Defamation": 364,
+    "total": 18066,
+    "pct": 16.0
+  },
+  {
+    "group": "60\u201369",
+    "Cyber Fraud": 10607,
+    "Phishing": 1122,
+    "Hacking": 288,
+    "DDoS": 2,
+    "Sextortion (\u20ac)": 250,
+    "Sexual Offences": 6,
+    "Defamation": 157,
+    "total": 12432,
+    "pct": 11.0
+  },
+  {
+    "group": "70+",
+    "Cyber Fraud": 9350,
+    "Phishing": 873,
+    "Hacking": 201,
+    "DDoS": 2,
+    "Sextortion (\u20ac)": 120,
+    "Sexual Offences": 2,
+    "Defamation": 60,
+    "total": 10608,
+    "pct": 9.4
+  }
+]

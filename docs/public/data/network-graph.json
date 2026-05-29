@@ -1,0 +1,89 @@
+{
+  "id": "root",
+  "label": "Total Digital Crime",
+  "count": 190967,
+  "children": [
+    {
+      "id": "property",
+      "label": "Property Crime",
+      "count": 149136,
+      "color": "#ef4444",
+      "children": [
+        {
+          "id": "cyber_fraud",
+          "label": "Cyber Fraud",
+          "count": 132129
+        },
+        {
+          "id": "money_mules",
+          "label": "Money/Pkg Mules",
+          "count": 10919
+        },
+        {
+          "id": "sext_money",
+          "label": "Sextortion (\u20ac)",
+          "count": 5702
+        },
+        {
+          "id": "crypto_theft",
+          "label": "Crypto Theft",
+          "count": 386
+        }
+      ]
+    },
+    {
+      "id": "core",
+      "label": "Core Cybercrime",
+      "count": 21431,
+      "color": "#22c55e",
+      "children": [
+        {
+          "id": "phishing",
+          "label": "Phishing",
+          "count": 13814
+        },
+        {
+          "id": "hacking",
+          "label": "Hacking",
+          "count": 5251
+        },
+        {
+          "id": "malware",
+          "label": "Malware",
+          "count": 2228
+        },
+        {
+          "id": "ddos",
+          "label": "DDoS",
+          "count": 138
+        }
+      ]
+    },
+    {
+      "id": "sexual",
+      "label": "Sexual Offences",
+      "count": 10925,
+      "color": "#a855f7",
+      "children": [
+        {
+          "id": "sex_offences",
+          "label": "Sexual Offences",
+          "count": 10925
+        }
+      ]
+    },
+    {
+      "id": "defamation",
+      "label": "Defamation",
+      "count": 3373,
+      "color": "#f59e0b",
+      "children": [
+        {
+          "id": "defam_sub",
+          "label": "Cyber Defamation",
+          "count": 3373
+        }
+      ]
+    }
+  ]
+}

@@ -152,12 +152,16 @@ export default function App() {
   const [graph1, setGraph1] = useState(null);
   const [countryIntensity, setCountryIntensity] = useState(null);
   const [countrySources, setCountrySources] = useState(null);
+  const [networkData, setNetworkData] = useState(null);
+  const [ageData, setAgeData] = useState(null);
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
     fetch(`${base}data/graph1.json`).then(r => r.json()).then(setGraph1);
     fetch(`${base}data/country-intensity-by-type.json`).then(r => r.json()).then(setCountryIntensity);
     fetch(`${base}data/country-sources.json`).then(r => r.json()).then(setCountrySources);
+    fetch(`${base}data/network-graph.json`).then(r => r.json()).then(setNetworkData);
+    fetch(`${base}data/age-chart.json`).then(r => r.json()).then(setAgeData);
   }, []);
 
   return (
@@ -199,7 +203,7 @@ export default function App() {
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
           <StatBadge value={6000} suffix="+" label="Global incidents"  color="#00ffb4" delay={0.0} />
           <StatBadge value={2024}         label="Up to year"          color="#3b82f6" delay={0.2} />
-          <StatBadge value={14087}        label="Swiss reports"       color="#ef4444" delay={0.4} />
+          <StatBadge value={190967}       label="Swiss reports"       color="#ef4444" delay={0.4} />
           <StatBadge value={160}  suffix="+" label="Countries"        color="#22c55e" delay={0.6} />
         </div>
 
@@ -253,7 +257,7 @@ export default function App() {
         <SectionHeader
           number="3"
           title="Switzerland: A Domestic Deep Dive"
-          subtitle="Zooming in on reported cybercrime within Switzerland using cantonal police data. Explore how crime categories break down hierarchically and which age groups are most vulnerable."
+          subtitle="Zooming in on reported digital crime within Switzerland using national FSO Police Crime Statistics (2020–2024). Explore how crime categories break down hierarchically and which age groups are most affected."
         />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 24 }}>
@@ -262,9 +266,9 @@ export default function App() {
               3a — Cybercrime Structure
             </h3>
             <p style={{ color: '#4a5568', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
-              Node size encodes incident volume. Click any node to highlight its full path from root to leaf.
+              Node size encodes offence volume. Click any node to highlight its full path from root to leaf.
             </p>
-            <NetworkGraph />
+            <NetworkGraph data={networkData} />
           </Card>
 
           <Card>
@@ -272,17 +276,17 @@ export default function App() {
               3b — Susceptibility by Age Group
             </h3>
             <p style={{ color: '#4a5568', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
-              The 35–44 age group files the most cybercrime reports. The <span style={{ color: '#00ffe7' }}>peak bar</span> is highlighted.
+              The 35–49 age group accounts for the most digital crime offences. The <span style={{ color: '#00ffb4' }}>peak bar</span> is highlighted.
             </p>
-            <AgeChart />
+            <AgeChart data={ageData} />
           </Card>
         </div>
 
         <div style={{ display: 'flex', gap: 16, marginTop: 18, flexWrap: 'wrap' }}>
           <InsightCard color="#ef4444" icon="💸"
-            text="Cyber fraud dominates Swiss cybercrime at 84% of all reports, with phishing and investment scams leading." />
+            text="Property crime (cyber fraud, money mules, sextortion) dominates at 80% of all Swiss digital offences — 190,967 total across 2020–2024." />
           <InsightCard color="#00ffb4" icon="👤"
-            text="The 35–44 cohort is the most targeted age group, while minors and young adults are comparatively underrepresented." />
+            text="The 35–49 cohort is the most affected age group nationally (29%), while minors under 18 account for only 3.6% of victims." />
         </div>
       </section>
 
@@ -295,7 +299,7 @@ export default function App() {
         <div>
           <div style={{ color: '#00ffb4', marginBottom: 6, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: 11 }}>Datasets</div>
           <div>EuRepoC Global Dataset v1.3 — international cyber incidents</div>
-          <div>KTZH Cantonal Police — Swiss cybercrime reports (Zurich)</div>
+          <div>FSO Police Crime Statistics — Swiss digital crime reports (national, 2020–2024)</div>
         </div>
         <div>
           <div style={{ color: '#00ffb4', marginBottom: 6, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: 11 }}>Built with</div>
