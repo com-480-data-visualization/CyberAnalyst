@@ -24,8 +24,8 @@ CyberAnalyst is an interactive data story that takes you from the macro-level sh
 |---|-------|---------|-----------------|
 | 1 | **Streamgraph** — monthly incident volume by attack category (2018–2024) | EuRepoC Global | Toggle categories · hover crosshair for counts · numbered geopolitical event pins |
 | 2 | **Globe** — attack intensity per country on a rotatable 3-D globe | EuRepoC Global | Drag to rotate · filter All / Disruption / Exploitation · click country to pin top threat actors |
-| 3a | **Network Graph** — hierarchical structure of Swiss cybercrime | KTZH Kantonspolizei | Click any node to highlight its full root-to-leaf path |
-| 3b | **Stacked Bar Chart** — cybercrime reports by age group and attack type | KTZH Kantonspolizei | Click any segment or legend item to isolate that attack type across all age groups |
+| 3a | **Network Graph** — hierarchical structure of Swiss cybercrime | Digital crime: Offences by modus operandi | Click any node to highlight its full root-to-leaf path |
+| 3b | **Stacked Bar Chart** — cybercrime reports by age group and attack type | Digital crime: Offences by modus operandi | Click any segment or legend item to isolate that attack type across all age groups |
 
 ---
 
@@ -34,7 +34,7 @@ CyberAnalyst is an interactive data story that takes you from the macro-level sh
 | Dataset | Source | Coverage | Records |
 |---------|--------|----------|---------|
 | EuRepoC Global Cyber Incidents v1.3 | [eurepoc.eu](https://eurepoc.eu) | 2000–2024, 160+ countries | 6,000+ incidents, 60+ variables |
-| KTZH Kantonspolizei Zürich | [data.stadt-zuerich.ch](https://data.stadt-zuerich.ch) | 2017–2024, Kanton Zürich | 14,087 cybercrime reports |
+| Digital crime: Offences by modus operandi | [opendata.swiss](https://opendata.swiss/de/dataset/digitale-kriminalitat-straftaten-nach-modusgruppe/resource/95b86043-256d-4fad-a42b-7e3d36d75f70) | 2020–2024, all Swiss cantons | ~190,000 cybercrime records |
 
 ---
 
@@ -95,4 +95,4 @@ See [process-book.pdf](process-book.pdf) for the full design process — origina
 |--------|--------------|
 | **Erik Hubner** | Website architecture (React + Vite), Streamgraph (D3, event markers, category toggles), animated background, visual identity, deployment pipeline, process book |
 | **Youcef Amar** | Globe (orthographic projection, drag rotation, logarithmic colour scale, threat-actor panel), EuRepoC data processing, attack-type filtering |
-| **Andre Cadet** | Network graph (radial layout, click-to-highlight), age bar chart (stacked breakdown), KTZH data processing, narrative copy, insight cards |
+| **Andre Cadet** | Network graph (radial layout, click-to-highlight), age bar chart (stacked breakdown), Swiss digital crime data processing, narrative copy, insight cards |

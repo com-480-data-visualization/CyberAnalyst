@@ -31,13 +31,13 @@ We structured the narrative in three acts, moving from the global to the local:
 
 1. **The Global Pulse**, monthly attack volumes by category from 2018 to 2024, anchored to real geopolitical events
 2. **Attack Intensity by Country**, which nations are most targeted and who is behind the attacks
-3. **Switzerland: A Domestic Deep Dive**, cantonal police data revealing the structure of local cybercrime and the age groups most at risk
+3. **Switzerland: A Domestic Deep Dive**, Swiss cantonal cybercrime data revealing the structure of local cybercrime and the age groups most at risk
 
 **Datasets:**
 
 - **EuRepoC Global Cyber Incidents v1.3** - 6,000+ incidents from 2000 to 2024, with 60+ variables including attack type, actor, target country, intensity score, and attribution method. Maintained by a consortium of European universities tracking state-sponsored and politically motivated cyber operations globally. The main data quality issue is `economic_impact`, missing in approximately 48% of rows, reflecting how rarely financial damage figures are publicly disclosed.
 
-- **KTZH Kantonspolizei Zurich** - 14,087 cybercrime reports from 2017 to 2024, broken down by subcategory and victim age group. Published under an open data licence by the Canton of Zurich. Total offences grew from 2,166 in 2017 to 14,162 in 2024, a 6.5x increase over eight years. The dataset is entirely complete with no missing values, though coverage is limited to Kanton Zurich only - which motivates our comparison with the global EuRepoC data as a "local case study within a global story."
+- **Digital crime: Offences by modus operandi** - around 190,000 cybercrime records from 2020 to 2024, covering the entirety of cyber attacks across Switzerland. Published under an open data licence via opendata.swiss, the dataset spans all Swiss cantons and serves the same purpose as our former Zurich dataset, but at national scale.
 
 # 2. From Sketches to Reality
 
@@ -159,12 +159,12 @@ Erik Hubner & Website architecture (React + Vite), Streamgraph (D3, event marker
 \addlinespace
 Youcef Amar & Globe (orthographic projection, drag rotation, log colour scale, attribution panel), EuRepoC data processing, attack-type filtering, country-sources data \\
 \addlinespace
-Andre Cadet & Network graph (radial layout, click-to-highlight), age bar chart, KTZH data processing, narrative copy, insight cards, data analysis \\
+Andre Cadet & Network graph (radial layout, click-to-highlight), age bar chart, Swiss digital crime data processing, narrative copy, insight cards, data analysis \\
 \bottomrule
 \end{tabular}
 
 \vspace{0.6cm}
 
-**Datasets:** EuRepoC Cyber Incident Dataset v1.3, https://eurepoc.eu $\cdot$ KTZH Kantonspolizei Zurich, https://data.stadt-zuerich.ch
+**Datasets:** EuRepoC Cyber Incident Dataset v1.3, https://eurepoc.eu $\cdot$ Digital crime: Offences by modus operandi, https://opendata.swiss/de/dataset/digitale-kriminalitat-straftaten-nach-modusgruppe/resource/95b86043-256d-4fad-a42b-7e3d36d75f70
 
 **Technologies:** D3.js v7 $\cdot$ React 18 $\cdot$ Vite 5 $\cdot$ TopoJSON $\cdot$ Google Fonts $\cdot$ GitHub Actions $\cdot$ GitHub Pages
